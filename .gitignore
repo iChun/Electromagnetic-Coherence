@@ -1,0 +1,13 @@
+/bin
+
+*.classpath
+*.project
+.settings/
+CREDITS-fml.txt
+LICENSE-fml.txt
+MinecraftForge-Credits.txt
+MinecraftForge-License.txt
+build/
+eclipse/
+forge-1.6.4-9.11.1.964-changelog.txt
+*.iml

@@ -5,6 +5,7 @@ import cpw.mods.fml.common.Mod.EventHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
 import resonantinduction.em.laser.BlockLaserEmitter
+import net.minecraft.util.Vec3
 
 /**
  * @author Calclavia
@@ -24,7 +25,6 @@ object ElectromagneticCoherence
   var proxy: CommonProxy = null
 
   var blockLaserEmitter: BlockLaserEmitter = null
-  //var blockMirror
 
   @EventHandler
   def init(event: FMLInitializationEvent)

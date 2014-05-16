@@ -5,5 +5,8 @@ package resonantinduction.em
  */
 class CommonProxy
 {
+  def renderLaser(start: Vector3, end: Vector3, life: Int)
+  {
 
+  }
 }

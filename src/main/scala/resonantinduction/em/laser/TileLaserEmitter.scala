@@ -1,4 +1,4 @@
-package resonantinduction.em
+package resonantinduction.em.laser
 
 import net.minecraft.tileentity.TileEntity
 
@@ -7,8 +7,10 @@ import net.minecraft.tileentity.TileEntity
  */
 class TileLaserEmitter extends TileEntity
 {
+  var energy = 0D
+
   override def updateEntity()
   {
-
+    
   }
 }

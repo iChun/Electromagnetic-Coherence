@@ -4,6 +4,7 @@ import cpw.mods.fml.common.{FMLLog, SidedProxy, Mod}
 import cpw.mods.fml.common.Mod.EventHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
+import resonantinduction.em.laser.BlockLaserEmitter
 
 /**
  * @author Calclavia
@@ -23,7 +24,6 @@ object ElectromagneticCoherence
   var proxy: CommonProxy = null
 
   var blockLaserEmitter: BlockLaserEmitter = null
-
   //var blockMirror
 
   @EventHandler
@@ -32,40 +32,8 @@ object ElectromagneticCoherence
     blockLaserEmitter = new BlockLaserEmitter()
     GameRegistry.registerBlock(blockLaserEmitter, "LaserEmitter")
 
-    loadLanguages(DIRECTORY + "languages/", Array("en_US"))
-  }
-
-  def loadLanguages(languagePath: String, languageSupported: Array[String]): Int =
-  {
-    var languages: Int = 0
-    for (language <- languageSupported)
-    {
-      LanguageRegistry.instance.loadLocalization(languagePath + language + ".properties", language, false)
-      if (LanguageRegistry.instance.getStringLocalization("children", language) ne "")
-      {
-        try
-        {
-          val children: Array[String] = LanguageRegistry.instance.getStringLocalization("children", language).split(",")
-          for (child <- children)
-          {
-            if (child != "" || child != null)
-            {
-              LanguageRegistry.instance.loadLocalization(languagePath + language + ".properties", child, false)
-              languages += 1
-            }
-          }
-        }
-        catch
-          {
-            case e: Exception =>
-            {
-              FMLLog.severe("Failed to load a child language file.")
-              e.printStackTrace
-            }
-          }
-      }
-      languages += 1
-    }
-    return languages
+    LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserEmitter.name", "Laser Emitter")
+    LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "mirror.name", "Mirror")
+    LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserReceiver.name", "Laser Receiver")
   }
 }

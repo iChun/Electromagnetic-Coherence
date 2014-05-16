@@ -51,9 +51,7 @@ class Vector3
 
   def -=(amount: Double): Vector3 =
   {
-    x -= amount
-    y -= amount
-    z -= amount
+    this += -amount
     return this
   }
 
@@ -112,6 +110,8 @@ class Vector3
   def magnitude = Math.sqrt(magnitudeSquared)
 
   override def clone() = new Vector3(x, y, z)
+
+  override def toString() = "Vector3[" + x + "," + y + "," + z + "]"
 
   def distance(other: Vector3) = (other - this).magnitude
 

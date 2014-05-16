@@ -9,7 +9,7 @@ class CommonProxy
 {
   def renderLaser(world: World, start: Vector3, end: Vector3)
   {
-    renderLaser(world, start, end, 0)
+    renderLaser(world, start, end, 1)
   }
 
   def renderLaser(world: World, start: Vector3, end: Vector3, life: Int)

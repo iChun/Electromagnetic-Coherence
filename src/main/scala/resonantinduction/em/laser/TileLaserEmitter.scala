@@ -30,6 +30,8 @@ class TileLaserEmitter extends TileEntity
 
         ElectromagneticCoherence.proxy.renderLaser(worldObj, position, hitVec)
       }
+
+      energy -= 10;
     }
   }
 

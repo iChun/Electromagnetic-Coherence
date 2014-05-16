@@ -1,22 +1,118 @@
 package resonantinduction.em
 
-import net.minecraft.util.Vec3
 import net.minecraft.tileentity.TileEntity
+import net.minecraftforge.common.util.ForgeDirection
+import net.minecraft.util.Vec3
 
 /**
  * @author Calclavia
  */
-class Vector3 extends Vec3(Vec3.fakePool, 0, 0, 0)
+class Vector3
 {
-  def x = xCoord
+  var x = 0D
+  var y = 0D
+  var z = 0D
 
-  def y = yCoord
-
-  def z = zCoord
-
-
-  def Vector3(tile: TileEntity)
+  def this(newX: Double, newY: Double, newZ: Double)
   {
-    super(Vec3.fakePool, tile.xCoord, tile.yCoord, tile.zCoord)
+    this()
+    this.x = newX
+    this.y = newY
+    this.z = newZ
   }
+
+  def this(tile: TileEntity)
+  {
+    this(tile.xCoord, tile.yCoord, tile.zCoord)
+  }
+
+  def this(vec: Vec3)
+  {
+    this(vec.xCoord, vec.yCoord, vec.zCoord)
+  }
+
+  def this(dir: ForgeDirection)
+  {
+    this(dir.offsetX, dir.offsetY, dir.offsetZ)
+  }
+
+  def toVec3: Vec3 = Vec3.createVectorHelper(x, y, z)
+
+  /**
+   * Operations
+   */
+  def +=(amount: Double): Vector3 =
+  {
+    x += amount
+    y += amount
+    z += amount
+    return this
+  }
+
+  def -=(amount: Double): Vector3 =
+  {
+    x -= amount
+    y -= amount
+    z -= amount
+    return this
+  }
+
+  def /=(amount: Double): Vector3 =
+  {
+    x /= amount
+    y /= amount
+    z /= amount
+    return this
+  }
+
+  def *=(amount: Double): Vector3 =
+  {
+    x *= amount
+    y *= amount
+    z *= amount
+    return this
+  }
+
+  def +(amount: Double): Vector3 =
+  {
+    return new Vector3(x + amount, y + amount, z + amount)
+  }
+
+  def +(amount: Vector3): Vector3 =
+  {
+    return new Vector3(x + amount.x, y + amount.y, z + amount.z)
+  }
+
+  def -(amount: Double): Vector3 =
+  {
+    return (this + -amount)
+  }
+
+  def -(amount: Vector3): Vector3 =
+  {
+    return (this + (amount * -1))
+  }
+
+  def /(amount: Double): Vector3 =
+  {
+    return new Vector3(x / amount, y / amount, z / amount)
+  }
+
+  def *(amount: Double): Vector3 =
+  {
+    return new Vector3(x * amount, y * amount, z * amount)
+  }
+
+  def ^(other: Vector3) = x * other.x + y * other.y + z * other.z
+
+  def x(other: Vector3): Vector3 = new Vector3(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x)
+
+  def magnitudeSquared = this ^ this;
+
+  def magnitude = Math.sqrt(magnitudeSquared)
+
+  override def clone() = new Vector3(x, y, z)
+
+  def distance(other: Vector3) = (other - this).magnitude
+
 }

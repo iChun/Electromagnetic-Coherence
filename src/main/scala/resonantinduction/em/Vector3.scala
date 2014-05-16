@@ -36,7 +36,7 @@ class Vector3
     this(dir.offsetX, dir.offsetY, dir.offsetZ)
   }
 
-  def toVec3: Vec3 = Vec3.createVectorHelper(x, y, z)
+  def toVec3 = Vec3.createVectorHelper(x, y, z)
 
   /**
    * Operations
@@ -101,17 +101,17 @@ class Vector3
     return new Vector3(x * amount, y * amount, z * amount)
   }
 
-  def ^(other: Vector3) = x * other.x + y * other.y + z * other.z
+  def $(other: Vector3) = x * other.x + y * other.y + z * other.z
 
   def x(other: Vector3): Vector3 = new Vector3(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x)
 
-  def magnitudeSquared = this ^ this;
+  def magnitudeSquared = this $ this;
 
   def magnitude = Math.sqrt(magnitudeSquared)
 
-  override def clone() = new Vector3(x, y, z)
+  override def clone = new Vector3(x, y, z)
 
-  override def toString() = "Vector3[" + x + "," + y + "," + z + "]"
+  override def toString = "Vector3[" + x + "," + y + "," + z + "]"
 
   def distance(other: Vector3) = (other - this).magnitude
 

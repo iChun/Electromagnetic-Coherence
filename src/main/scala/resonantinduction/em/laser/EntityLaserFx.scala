@@ -8,6 +8,7 @@ import cpw.mods.fml.client.FMLClientHandler
 import resonantinduction.em.{Vector3, ElectromagneticCoherence}
 import net.minecraft.util.ResourceLocation
 import net.minecraft.client.renderer.texture.TextureMap
+import net.minecraft.client.renderer.entity.RenderManager
 
 /**
  * @author Calclavia
@@ -18,8 +19,6 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
 
   val length = start.distance(end)
   this.particleMaxAge = life
-
-  println(end)
 
   override def onUpdate
   {
@@ -34,7 +33,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
 
     particleAge += 1
 
-    moveEntity(motionX, motionY, motionZ)
+    //moveEntity(motionX, motionY, motionZ)
   }
 
   override def renderParticle(tessellator: Tessellator, par2: Float, par3: Float, par4: Float, par5: Float, par6: Float, par7: Float)
@@ -50,37 +49,34 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
     /**
      * Translation
      */
-    GL11.glTranslated(posX, posY, posZ)
-
+    GL11.glEnable(3042);
     GL11.glColor4f(1, 1, 1, 1)
 
-    val size = 0.5
-    val var9 = 0.9
+    val f11 = this.prevPosX + (this.posX - this.prevPosX) * par2 - EntityFX.interpPosX
+    val f12 = this.prevPosY + (this.posY - this.prevPosY) * par2 - EntityFX.interpPosY
+    val f13 = this.prevPosZ + (this.posZ - this.prevPosZ) * par2 - EntityFX.interpPosZ
 
-    val var11 = worldObj.getTotalWorldTime() + par2
-    val var12 = -var11 * 0.2 - (-var11 * 0.1)
+    GL11.glTranslated(f11, f12, f13)
 
     /**
-     * Tesselate laser
+     * Rotate to face player
      */
-    val var44 = -0.15D * size
-    val var17 = 0.15D * size
-    val var44b = -0.15D * size
-    val var17b = 0.15D * size
+    GL11.glRotated(-RenderManager.instance.playerViewY, 0, 1, 0)
+    GL11.glRotated(RenderManager.instance.playerViewX, 1, 0, 0)
 
-    val var29 = length * size * var9
-    val var31 = 0.0D
-    val var33 = 1.0D
-    val var35 = -1.0F + var12
-    val var37 = length * size * var9 + var35
+    GL11.glRotated(90, 0, 0, 1)
 
+    val time = worldObj.getTotalWorldTime()
+    /**
+     * Tessellate laser
+     */
     tessellator.startDrawingQuads()
     tessellator.setBrightness(200)
-    tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, 1)
-    tessellator.addVertexWithUV(var44b, var29, 0.0D, var33, var37)
-    tessellator.addVertexWithUV(var44, 0.0D, 0.0D, var33, var35)
-    tessellator.addVertexWithUV(var17, 0.0D, 0.0D, var31, var35)
-    tessellator.addVertexWithUV(var17b, var29, 0.0D, var31, var37)
+    tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
+    tessellator.addVertexWithUV(-0.5, -0.5, 0, 0, 0)
+    tessellator.addVertexWithUV(-0.5, 0.5, 0, 0, 64)
+    tessellator.addVertexWithUV(0.5, 0.5, 0, 64, 64)
+    tessellator.addVertexWithUV(0.5, -0.5, 0, 64, 0)
     tessellator.draw()
 
     GL11.glPopMatrix()

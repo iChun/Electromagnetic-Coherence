@@ -3,7 +3,6 @@ package resonantinduction.em.laser
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.world.World
 import net.minecraft.util.MovingObjectPosition
-import resonantinduction.em.laser.mirror.TileMirror
 import scala.collection.mutable
 import net.minecraft.block.Block
 
@@ -44,24 +43,9 @@ object Laser
            */
           val hitTile = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ)
 
-          if (hitTile.isInstanceOf[TileMirror])
+          if (hitTile.isInstanceOf[ILaserHandler])
           {
-            val mirror = hitTile.asInstanceOf[TileMirror]
-
-            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, mirror.position + 0.5)
-
-            /**
-             * Calculate Reflection
-             */
-            val angle = Math.acos(direction $ mirror.normal)
-            val axisOfReflection = direction x mirror.normal
-            val rotateAngle = 180 - Math.toDegrees(2 * angle)
-
-            if (Math.toDegrees(rotateAngle) < 180)
-            {
-              val newDirection = (direction.clone.rotate(rotateAngle, axisOfReflection)).normalize
-              spawn(world, mirror.position + 0.5 + newDirection, mirror.position + 0.5, newDirection, energy / 2)
-            }
+            hitTile.asInstanceOf[ILaserHandler].onLaserHit(renderStart, direction, energy)
           }
           else
           {

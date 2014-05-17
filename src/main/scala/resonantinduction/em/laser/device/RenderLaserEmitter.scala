@@ -29,6 +29,7 @@ object RenderLaserEmitter extends TileEntitySpecialRenderer
 
     tileEntity.asInstanceOf[TileLaserEmitter].direction match
     {
+      case ForgeDirection.UNKNOWN =>
       case ForgeDirection.UP => glRotatef(-90, 1, 0, 0)
       case ForgeDirection.DOWN => glRotatef(90, 1, 0, 0)
       case ForgeDirection.NORTH => glRotatef(90, 0, 1, 0)

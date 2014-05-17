@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11
 /**
  * @author Calclavia
  */
-class RenderMirror extends TileEntitySpecialRenderer
+object RenderMirror extends TileEntitySpecialRenderer
 {
   val model = AdvancedModelLoader.loadModel(new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.MODEL_PATH_NAME + "mirror.tcn"))
   val texture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.MODEL_PATH_NAME + "mirror.png")
@@ -28,6 +28,16 @@ class RenderMirror extends TileEntitySpecialRenderer
 
     glRotated(180, tile.normal.x, tile.normal.y, tile.normal.z)
     model.renderOnly("mirror", "mirrorBacking", "standConnector")
+
+    GL11.glPopMatrix()
+  }
+
+  def renderItem()
+  {
+    glPushMatrix()
+
+    FMLClientHandler.instance.getClient.renderEngine.bindTexture(texture)
+    model.renderAll()
 
     GL11.glPopMatrix()
   }

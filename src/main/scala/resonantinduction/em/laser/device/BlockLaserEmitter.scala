@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.ElectromagneticCoherence
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
+import resonantinduction.em.laser.BlockRenderingHandler
 
 /**
  * @author Calclavia
@@ -31,7 +32,7 @@ class BlockLaserEmitter extends BlockContainer(Material.rock)
     return new TileLaserEmitter()
   }
 
-  override def getRenderType = -1
+  override def getRenderType = BlockRenderingHandler.getRenderId
 
   override def renderAsNormalBlock = false
 

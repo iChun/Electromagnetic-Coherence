@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection
 /**
  * @author Calclavia
  */
-class RenderLaserEmitter extends TileEntitySpecialRenderer
+object RenderLaserEmitter extends TileEntitySpecialRenderer
 {
   val model = AdvancedModelLoader.loadModel(new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.MODEL_PATH_NAME + "laserEmitter.tcn"))
   val texture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.MODEL_PATH_NAME + "laserEmitter.png")
@@ -41,6 +41,26 @@ class RenderLaserEmitter extends TileEntitySpecialRenderer
       glRotatef(-90, 0, 1, 0)
     else
       glRotatef(180, 1, 0, 0)
+
+    FMLClientHandler.instance.getClient.renderEngine.bindTexture(texture)
+    model.renderAll()
+
+    glShadeModel(GL_FLAT)
+    glDisable(GL_LINE_SMOOTH)
+    glDisable(GL_POLYGON_SMOOTH)
+    glDisable(GL_BLEND)
+
+    GL11.glPopMatrix()
+  }
+
+  def renderItem()
+  {
+    glPushMatrix()
+    glRotated(180, 0, 1, 0)
+
+    glShadeModel(GL_SMOOTH)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     FMLClientHandler.instance.getClient.renderEngine.bindTexture(texture)
     model.renderAll()

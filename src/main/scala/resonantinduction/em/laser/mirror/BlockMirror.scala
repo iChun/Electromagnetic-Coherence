@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.world.World
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.tileentity.TileEntity
+import resonantinduction.em.laser.BlockRenderingHandler
 
 /**
  * @author Calclavia
@@ -32,7 +33,7 @@ class BlockMirror extends BlockContainer(Material.rock)
     return new TileMirror()
   }
 
-  override def getRenderType = -1
+  override def getRenderType = BlockRenderingHandler.getRenderId
 
   override def renderAsNormalBlock = false
 

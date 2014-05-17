@@ -22,10 +22,19 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
   val detail = 36
   val rotationSpeed = 15
 
+  /**
+   * Set position
+   */
   val midPoint = (end + start) / 2
-  posX = midPoint.x
-  posY = midPoint.y
-  posZ = midPoint.z
+  setPosition(midPoint.x, midPoint.y, midPoint.z)
+  lastTickPosX = posX
+  lastTickPosY = posY
+  lastTickPosZ = posZ
+
+  prevPosX = posX
+  prevPosY = posY
+  prevPosZ = posZ
+
   particleScale = 0.2f
   particleMaxAge = life
   particleAlpha = 1 / detail.asInstanceOf[Float]

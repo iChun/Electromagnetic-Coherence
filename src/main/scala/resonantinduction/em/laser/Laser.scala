@@ -14,6 +14,11 @@ object Laser
 
   def spawn(world: World, start: Vector3, direction: Vector3, energy: Double)
   {
+    spawn(world, start, start, direction, energy)
+  }
+
+  def spawn(world: World, start: Vector3, renderStart: Vector3, direction: Vector3, energy: Double)
+  {
     if (energy > 10)
     {
       val maxPos = start + (direction * maxDistance)
@@ -34,7 +39,7 @@ object Laser
           {
             val mirror = hitTile.asInstanceOf[TileMirror]
 
-            ElectromagneticCoherence.proxy.renderLaser(world, start, mirror.position + 0.5)
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, mirror.position + 0.5)
 
             /**
              * Calculate Reflection
@@ -43,11 +48,11 @@ object Laser
             val newDirection = (direction.clone.rotate(180, mirror.normal)).normalize
             //direction.clone.rotate(angle, mirror.normal)
 
-            spawn(world, mirror.position + 0.5 + newDirection, mirror.normal, energy / 2)
+            spawn(world, mirror.position + 0.5 + mirror.normal, mirror.position + 0.5, mirror.normal, energy / 2)
           }
           else
           {
-            ElectromagneticCoherence.proxy.renderLaser(world, start, hitVec)
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
           }
         }
       }

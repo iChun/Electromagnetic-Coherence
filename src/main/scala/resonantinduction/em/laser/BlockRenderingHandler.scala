@@ -5,7 +5,8 @@ import net.minecraft.client.renderer.RenderBlocks
 import net.minecraft.world.IBlockAccess
 import net.minecraft.block.Block
 import resonantinduction.em.laser.mirror.{RenderMirror, BlockMirror}
-import resonantinduction.em.laser.device.{RenderLaserEmitter, BlockLaserEmitter}
+import resonantinduction.em.laser.emitter.{RenderLaserReceiver, RenderLaserEmitter, BlockLaserEmitter}
+import resonantinduction.em.laser.receiver.BlockLaserReceiver
 
 /**
  * @author Calclavia
@@ -19,6 +20,10 @@ object BlockRenderingHandler extends ISimpleBlockRenderingHandler
     if (block.isInstanceOf[BlockLaserEmitter])
     {
       RenderLaserEmitter.renderItem()
+    }
+    else if (block.isInstanceOf[BlockLaserReceiver])
+    {
+      RenderLaserReceiver.renderItem()
     }
     else if (block.isInstanceOf[BlockMirror])
     {

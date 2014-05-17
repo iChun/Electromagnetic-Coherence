@@ -45,7 +45,10 @@ object Laser
 
           if (hitTile.isInstanceOf[ILaserHandler])
           {
-            hitTile.asInstanceOf[ILaserHandler].onLaserHit(renderStart, direction, energy)
+            if (!hitTile.asInstanceOf[ILaserHandler].onLaserHit(renderStart, direction, hit, energy))
+            {
+              ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
+            }
           }
           else
           {

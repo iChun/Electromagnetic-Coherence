@@ -3,18 +3,19 @@ package resonantinduction.em.laser.mirror
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.nbt.NBTTagCompound
-import resonantinduction.em.laser.{Laser, ILaserHandler}
+import resonantinduction.em.laser.{TileBase, Laser, ILaserHandler}
+import net.minecraft.util.MovingObjectPosition
 
 /**
  * @author Calclavia
  */
-class TileMirror extends TileEntity with ILaserHandler
+class TileMirror extends TileBase with ILaserHandler
 {
   var normal = new Vector3(0, 1, 0)
 
   override def canUpdate = false
 
-  override def onLaserHit(renderStart: Vector3, incidentDirection: Vector3, energy: Double): Boolean =
+  override def onLaserHit(renderStart: Vector3, incidentDirection: Vector3, hit:MovingObjectPosition, energy: Double): Boolean =
   {
     ElectromagneticCoherence.proxy.renderLaser(worldObj, renderStart, position + 0.5)
 
@@ -47,6 +48,4 @@ class TileMirror extends TileEntity with ILaserHandler
     normal.writeToNBT(normalNBT)
     nbt.setTag("normal", normalNBT)
   }
-
-  def position(): Vector3 = new Vector3(this)
 }

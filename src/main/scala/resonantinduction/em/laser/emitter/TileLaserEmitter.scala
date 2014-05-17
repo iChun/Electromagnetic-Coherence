@@ -1,14 +1,14 @@
-package resonantinduction.em.laser.device
+package resonantinduction.em.laser.emitter
 
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.Vector3
 import net.minecraftforge.common.util.ForgeDirection
-import resonantinduction.em.laser.Laser
+import resonantinduction.em.laser.{TileBase, Laser}
 
 /**
  * @author Calclavia
  */
-class TileLaserEmitter extends TileEntity
+class TileLaserEmitter extends TileBase
 {
   var energy = 0D
 
@@ -25,10 +25,4 @@ class TileLaserEmitter extends TileEntity
       energy = 0;
     }
   }
-
-  def isPowered(): Boolean = getWorldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)
-
-  def direction(): ForgeDirection = ForgeDirection.getOrientation(getBlockMetadata)
-
-  def position(): Vector3 = new Vector3(this)
 }

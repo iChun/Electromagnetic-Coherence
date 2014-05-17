@@ -57,7 +57,7 @@ public class FixedTechneModel extends ModelBase implements IModelCustom
 			IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resource);
 			loadTechneModel(res.getInputStream());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			throw new ModelFormatException("IO Exception reading model format", e);
 		}

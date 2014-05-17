@@ -3,9 +3,9 @@ package resonantinduction.em
 import cpw.mods.fml.client.FMLClientHandler
 import net.minecraft.world.World
 import cpw.mods.fml.client.registry.{RenderingRegistry, ClientRegistry}
-import resonantinduction.em.laser.device.{TileLaserEmitter, RenderLaserEmitter, EntityLaserFx}
+import resonantinduction.em.laser.emitter.{RenderLaserReceiver, TileLaserReceiver, TileLaserEmitter, RenderLaserEmitter}
 import resonantinduction.em.laser.mirror.{RenderMirror, TileMirror}
-import resonantinduction.em.laser.BlockRenderingHandler
+import resonantinduction.em.laser.{EntityLaserFx, BlockRenderingHandler}
 
 /**
  * @author Calclavia
@@ -18,6 +18,7 @@ class ClientProxy extends CommonProxy
     RenderingRegistry.registerBlockHandler(BlockRenderingHandler)
 
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileLaserEmitter], RenderLaserEmitter)
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileLaserReceiver], RenderLaserReceiver)
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileMirror], RenderMirror)
   }
 

@@ -2,7 +2,7 @@ package resonantinduction.em
 
 import net.minecraft.world.World
 import cpw.mods.fml.common.registry.GameRegistry
-import resonantinduction.em.laser.device.TileLaserEmitter
+import resonantinduction.em.laser.emitter.{TileLaserReceiver, TileLaserEmitter}
 import resonantinduction.em.laser.mirror.TileMirror
 
 /**
@@ -13,6 +13,7 @@ class CommonProxy
   def init()
   {
     GameRegistry.registerTileEntity(classOf[TileLaserEmitter], "TileLaserEmitter")
+    GameRegistry.registerTileEntity(classOf[TileLaserReceiver], "TileLaserReceiver")
     GameRegistry.registerTileEntity(classOf[TileMirror], "TileMirror")
   }
 

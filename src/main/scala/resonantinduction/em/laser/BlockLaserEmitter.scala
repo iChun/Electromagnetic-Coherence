@@ -30,4 +30,10 @@ class BlockLaserEmitter extends BlockContainer(Material.rock)
   {
     return new TileLaserEmitter()
   }
+
+  override def getRenderType = -1
+
+  override def renderAsNormalBlock = false
+
+  override def isOpaqueCube = false
 }

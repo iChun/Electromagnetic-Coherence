@@ -1,9 +1,9 @@
 package resonantinduction.em.laser
 
 import net.minecraft.tileentity.TileEntity
-import net.minecraftforge.common.util.ForgeDirection
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.util.MovingObjectPosition
+import net.minecraftforge.common.util.ForgeDirection
 
 /**
  * @author Calclavia
@@ -25,15 +25,18 @@ class TileLaserEmitter extends TileEntity
       val maxPos = position + (new Vector3(direction) * 100) + 0.5;
       val hit = worldObj.rayTraceBlocks(startPos.toVec3, maxPos.toVec3)
 
-      if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+      if (hit != null)
       {
-        val hitVec = new Vector3(hit.hitVec)
-        val hitBlock = new Vector3(hit.blockX, hit.blockY, hit.blockZ)
+        if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+        {
+          val hitVec = new Vector3(hit.hitVec)
+          val hitBlock = new Vector3(hit.blockX, hit.blockY, hit.blockZ)
 
-        ElectromagneticCoherence.proxy.renderLaser(worldObj, startPos, hitVec + 0.5)
+          ElectromagneticCoherence.proxy.renderLaser(worldObj, startPos, hitVec + 0.5)
+        }
+
+        energy -= 10;
       }
-
-      energy -= 10;
     }
   }
 

@@ -4,6 +4,7 @@ import cpw.mods.fml.client.FMLClientHandler
 import net.minecraft.world.World
 import cpw.mods.fml.client.registry.ClientRegistry
 import resonantinduction.em.laser.device.{TileLaserEmitter, RenderLaserEmitter, EntityLaserFx}
+import resonantinduction.em.laser.mirror.{RenderMirror, TileMirror}
 
 /**
  * @author Calclavia
@@ -14,6 +15,7 @@ class ClientProxy extends CommonProxy
   {
     super.init()
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileLaserEmitter], new RenderLaserEmitter())
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileMirror], new RenderMirror())
   }
 
   override def renderLaser(world: World, start: Vector3, end: Vector3, life: Int)

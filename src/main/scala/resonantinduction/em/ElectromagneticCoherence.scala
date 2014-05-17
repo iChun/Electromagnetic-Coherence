@@ -7,6 +7,7 @@ import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
 import net.minecraft.util.Vec3
 import net.minecraftforge.client.model.AdvancedModelLoader
 import resonantinduction.em.laser.device.BlockLaserEmitter
+import resonantinduction.em.laser.mirror.BlockMirror
 
 /**
  * @author Calclavia
@@ -28,6 +29,7 @@ object ElectromagneticCoherence
   var proxy: CommonProxy = null
 
   var blockLaserEmitter: BlockLaserEmitter = null
+  var blockMirror: BlockMirror = null
 
   @EventHandler
   def init(event: FMLInitializationEvent)
@@ -35,7 +37,9 @@ object ElectromagneticCoherence
     AdvancedModelLoader.registerModelHandler(new FixedTechneModelLoader())
 
     blockLaserEmitter = new BlockLaserEmitter()
+    blockMirror = new BlockMirror()
     GameRegistry.registerBlock(blockLaserEmitter, "LaserEmitter")
+    GameRegistry.registerBlock(blockMirror, "BlockMirror")
 
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserEmitter.name", "Laser Emitter")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "mirror.name", "Mirror")

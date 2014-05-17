@@ -21,7 +21,7 @@ class TileLaserEmitter extends TileEntity
 
     if (energy > 0)
     {
-      LaserManager.spawn(worldObj, position + new Vector3(direction) + 0.5, new Vector3(direction))
+      LaserManager.spawn(worldObj, position + new Vector3(direction) * 0.6 + 0.5, new Vector3(direction))
       energy -= 10;
     }
   }

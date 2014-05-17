@@ -17,6 +17,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
   val laserStartTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserStart.png")
   val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserMiddle.png")
   val laserEndTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserEnd.png")
+  val laserNoiseTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/noise.png")
   val endSize = 0.0999
   val detail = 36
   val rotationSpeed = 15
@@ -115,6 +116,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
       /**
        * Render Middle
        */
+      glPushMatrix()
       FMLClientHandler.instance.getClient.renderEngine.bindTexture(laserMiddleTexture)
 
       tessellator.startDrawingQuads()
@@ -125,7 +127,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
       tessellator.addVertexWithUV(particleScale, length / 2 - endSize, 0, 1, 1)
       tessellator.addVertexWithUV(particleScale, -length / 2 + endSize, 0, 1, 0)
       tessellator.draw()
-
+      glPopMatrix()
 
       /**
        * Render End
@@ -145,6 +147,23 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
       tessellator.addVertexWithUV(particleScale, -particleScale, 0, 1, 0)
       tessellator.draw()
 
+      glPopMatrix()
+
+
+      /**
+       * Render Noise
+       */
+      glPushMatrix()
+      FMLClientHandler.instance.getClient.renderEngine.bindTexture(laserNoiseTexture)
+
+      tessellator.startDrawingQuads()
+      tessellator.setBrightness(200)
+      tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
+      tessellator.addVertexWithUV(-particleScale, -length / 2 + endSize, 0, 0, 0)
+      tessellator.addVertexWithUV(-particleScale, length / 2 - endSize, 0, 0, 1)
+      tessellator.addVertexWithUV(particleScale, length / 2 - endSize, 0, 1, 1)
+      tessellator.addVertexWithUV(particleScale, -length / 2 + endSize, 0, 1, 0)
+      tessellator.draw()
       glPopMatrix()
     }
 

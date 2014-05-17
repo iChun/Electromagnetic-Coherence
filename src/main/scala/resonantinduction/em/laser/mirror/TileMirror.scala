@@ -1,6 +1,5 @@
 package resonantinduction.em.laser.mirror
 
-import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.nbt.NBTTagCompound
 import resonantinduction.em.laser.{TileBase, Laser, ILaserHandler}
@@ -15,9 +14,9 @@ class TileMirror extends TileBase with ILaserHandler
 
   override def canUpdate = false
 
-  override def onLaserHit(renderStart: Vector3, incidentDirection: Vector3, hit:MovingObjectPosition, energy: Double): Boolean =
+  override def onLaserHit(renderStart: Vector3, incidentDirection: Vector3, hit: MovingObjectPosition, color: Vector3, energy: Double): Boolean =
   {
-    ElectromagneticCoherence.proxy.renderLaser(worldObj, renderStart, position + 0.5)
+    ElectromagneticCoherence.proxy.renderLaser(worldObj, renderStart, position + 0.5, color)
 
     /**
      * Calculate Reflection
@@ -29,7 +28,7 @@ class TileMirror extends TileBase with ILaserHandler
     if (Math.toDegrees(rotateAngle) < 180)
     {
       val newDirection = (incidentDirection.clone.rotate(rotateAngle, axisOfReflection)).normalize
-      Laser.spawn(worldObj, position + 0.5 + newDirection, position + 0.5, newDirection, energy / 2)
+      Laser.spawn(worldObj, position + 0.5 + newDirection, position + 0.5, newDirection, color, energy / 2)
     }
 
     return true

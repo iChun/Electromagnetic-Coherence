@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation
 /**
  * @author Calclavia
  */
-class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) extends EntityFX(par1World, start.x, start.y, start.z)
+class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vector3, life: Int) extends EntityFX(par1World, start.x, start.y, start.z)
 {
   val laserStartTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserStart.png")
   val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserMiddle.png")
@@ -39,9 +39,9 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
   particleScale = 0.2f
   particleMaxAge = life
   particleAlpha = 1 / detail.asInstanceOf[Float]
-  particleRed = 1
-  particleGreen = 0.1f
-  particleBlue = 0.1f
+  particleRed = color.x.toFloat
+  particleGreen = color.y.toFloat
+  particleBlue = color.z.toFloat
 
   val length = start.distance(end)
 

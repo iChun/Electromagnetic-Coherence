@@ -9,10 +9,12 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11._
 import cpw.mods.fml.client.FMLClientHandler
 import net.minecraftforge.common.util.ForgeDirection
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 
 /**
  * @author Calclavia
  */
+@SideOnly(Side.CLIENT)
 object RenderLaserEmitter extends TileEntitySpecialRenderer
 {
   val model = AdvancedModelLoader.loadModel(new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.MODEL_PATH_NAME + "laserEmitter.tcn"))

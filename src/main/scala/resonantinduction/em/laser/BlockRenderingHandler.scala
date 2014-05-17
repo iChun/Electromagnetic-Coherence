@@ -7,10 +7,12 @@ import net.minecraft.block.Block
 import resonantinduction.em.laser.mirror.{RenderMirror, BlockMirror}
 import resonantinduction.em.laser.emitter.{RenderLaserReceiver, RenderLaserEmitter, BlockLaserEmitter}
 import resonantinduction.em.laser.receiver.BlockLaserReceiver
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 
 /**
  * @author Calclavia
  */
+@SideOnly(Side.CLIENT)
 object BlockRenderingHandler extends ISimpleBlockRenderingHandler
 {
   val renderID = RenderingRegistry.getNextAvailableRenderId

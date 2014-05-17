@@ -3,8 +3,11 @@ package resonantinduction.em.laser
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.world.World
 import net.minecraft.util.MovingObjectPosition
+import net.minecraft.block.{BlockStainedGlassPane, BlockStainedGlass, Block}
+import net.minecraft.block.material.Material
 import scala.collection.mutable
-import net.minecraft.block.{BlockStainedGlass, Block}
+import net.minecraft.item.ItemDye
+import java.awt.Color
 
 /**
  * @author Calclavia
@@ -17,8 +20,8 @@ object Laser
   val maxEnergyToMine = 100000D
 
   var lastUpdateTime = 0L
-  val currentBlockEnergy = new mutable.HashMap[Vector3, Double]()
-  val accumilatedBlockEnergy = new mutable.HashMap[Vector3, Double]()
+  val currentBlockEnergy = mutable.HashMap[Vector3, Double]()
+  val accumilatedBlockEnergy = mutable.HashMap[Vector3, Double]()
 
   def spawn(world: World, start: Vector3, direction: Vector3, energy: Double)
   {
@@ -26,6 +29,11 @@ object Laser
   }
 
   def spawn(world: World, start: Vector3, renderStart: Vector3, direction: Vector3, energy: Double)
+  {
+    spawn(world, start, renderStart, direction, new Vector3(1, 1, 1), energy)
+  }
+
+  def spawn(world: World, start: Vector3, renderStart: Vector3, direction: Vector3, color: Vector3, energy: Double)
   {
     if (energy > 10)
     {
@@ -42,18 +50,28 @@ object Laser
            * Handle Mirror Reflection
            */
           val hitTile = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ)
-          val hitBlock = world.getBlock(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
+          val hitBlock = world.getBlock(hit.blockX, hit.blockY, hit.blockZ)
+          val hitMetadata = world.getBlockMetadata(hit.blockX, hit.blockY, hit.blockZ)
 
           if (hitTile.isInstanceOf[ILaserHandler])
           {
-            if (!hitTile.asInstanceOf[ILaserHandler].onLaserHit(renderStart, direction, hit, energy))
+            if (!hitTile.asInstanceOf[ILaserHandler].onLaserHit(renderStart, direction, hit, color, energy))
             {
-              ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
+              ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color)
             }
           }
-          else if (hitBlock.isInstanceOf[BlockStainedGlass])
+          else if (hitBlock.getMaterial == Material.glass)
           {
-            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitBlockPos + 0.5, color)
+            var newColor = color
+
+            if (hitBlock.isInstanceOf[BlockStainedGlass] || hitBlock.isInstanceOf[BlockStainedGlassPane])
+            {
+              val dyeColor = new Color(ItemDye.field_150922_c(blockToDye(hitMetadata)))
+              newColor = new Vector3(dyeColor.getRed, dyeColor.getGreen, dyeColor.getBlue).normalize
+            }
+
+            spawn(world, hitBlockPos + 0.5 + direction, hitBlockPos + 0.5, direction, newColor, energy)
           }
           else
           {
@@ -95,14 +113,19 @@ object Laser
               //accumilatedBlockEnergy.remove(hitBlockPos)
             }
 
-            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color)
           }
 
           return
         }
       }
 
-      ElectromagneticCoherence.proxy.renderLaser(world, renderStart, maxPos)
+      ElectromagneticCoherence.proxy.renderLaser(world, renderStart, maxPos, color)
     }
+  }
+
+  def blockToDye(blockMeta: Int): Int =
+  {
+    return ~blockMeta & 15
   }
 }

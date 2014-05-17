@@ -26,11 +26,11 @@ class TileLaserReceiver extends TileBase with ILaserHandler
     }
   }
 
-  def onLaserHit(renderStart: Vector3, incident: Vector3, hit: MovingObjectPosition, energy: Double): Boolean =
+  def onLaserHit(renderStart: Vector3, incident: Vector3, hit: MovingObjectPosition, color: Vector3, energy: Double): Boolean =
   {
     if (hit.sideHit == direction.ordinal)
     {
-      ElectromagneticCoherence.proxy.renderLaser(world, renderStart, position + 0.5 + new Vector3(direction) * 0.3)
+      ElectromagneticCoherence.proxy.renderLaser(world, renderStart, position + 0.5 + new Vector3(direction) * 0.3, color)
       this.energy += energy
       return true
     }

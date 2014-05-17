@@ -8,10 +8,12 @@ import net.minecraft.tileentity.TileEntity
 import org.lwjgl.opengl.GL11._
 import cpw.mods.fml.client.FMLClientHandler
 import org.lwjgl.opengl.GL11
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 
 /**
  * @author Calclavia
  */
+@SideOnly(Side.CLIENT)
 object RenderMirror extends TileEntitySpecialRenderer
 {
   val model = AdvancedModelLoader.loadModel(new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.MODEL_PATH_NAME + "mirror.tcn"))

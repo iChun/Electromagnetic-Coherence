@@ -8,5 +8,5 @@ import resonantinduction.em.Vector3;
  */
 public interface ILaserHandler
 {
-	public boolean onLaserHit(Vector3 renderStart, Vector3 incident, MovingObjectPosition hit, double energy);
+	public boolean onLaserHit(Vector3 renderStart, Vector3 incident, MovingObjectPosition hit, Vector3 color, double energy);
 }

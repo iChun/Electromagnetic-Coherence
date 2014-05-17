@@ -22,8 +22,8 @@ class ClientProxy extends CommonProxy
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileMirror], RenderMirror)
   }
 
-  override def renderLaser(world: World, start: Vector3, end: Vector3, life: Int)
+  override def renderLaser(world: World, start: Vector3, end: Vector3, color: Vector3, life: Int)
   {
-    FMLClientHandler.instance().getClient.effectRenderer.addEffect(new EntityLaserFx(world, start, end, life))
+    FMLClientHandler.instance().getClient.effectRenderer.addEffect(new EntityLaserFx(world, start, end, color, life))
   }
 }

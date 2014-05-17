@@ -12,17 +12,17 @@ class CommonProxy
 {
   def init()
   {
-    GameRegistry.registerTileEntity(classOf[TileLaserEmitter], "TileLaserEmitter")
-    GameRegistry.registerTileEntity(classOf[TileLaserReceiver], "TileLaserReceiver")
-    GameRegistry.registerTileEntity(classOf[TileMirror], "TileMirror")
+    GameRegistry.registerTileEntity(classOf[TileLaserEmitter], "RILaserEmitter")
+    GameRegistry.registerTileEntity(classOf[TileLaserReceiver], "RILaserReceiver")
+    GameRegistry.registerTileEntity(classOf[TileMirror], "RIMirror")
   }
 
-  def renderLaser(world: World, start: Vector3, end: Vector3)
+  def renderLaser(world: World, start: Vector3, end: Vector3, color: Vector3)
   {
-    renderLaser(world, start, end, 1)
+    renderLaser(world, start, end, color, 1)
   }
 
-  def renderLaser(world: World, start: Vector3, end: Vector3, life: Int)
+  def renderLaser(world: World, start: Vector3, end: Vector3, color: Vector3, life: Int)
   {
 
   }

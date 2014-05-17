@@ -9,7 +9,7 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.laser.emitter.TileLaserReceiver
-import resonantinduction.em.laser.BlockRenderingHandler
+import resonantinduction.em.laser.{Laser, BlockRenderingHandler}
 
 /**
  * @author Calclavia
@@ -35,7 +35,7 @@ class BlockLaserReceiver extends BlockContainer(Material.rock)
 
   override def isProvidingStrongPower(access: IBlockAccess, x: Int, y: Int, z: Int, metadata: Int): Int =
   {
-    return Math.min(Math.ceil(access.getTileEntity(x, y, z).asInstanceOf[TileLaserReceiver].energy / 200), 15).toInt
+    return Math.min(Math.ceil(access.getTileEntity(x, y, z).asInstanceOf[TileLaserReceiver].energy / (Laser.maxEnergy / 15)), 15).toInt
   }
 
   override def createNewTileEntity(world: World, metadata: Int): TileEntity =

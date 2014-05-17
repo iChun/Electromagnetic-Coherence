@@ -28,7 +28,7 @@ class TileMirror extends TileBase with ILaserHandler
     if (Math.toDegrees(rotateAngle) < 180)
     {
       val newDirection = (incidentDirection.clone.rotate(rotateAngle, axisOfReflection)).normalize
-      Laser.spawn(worldObj, position + 0.5 + newDirection, position + 0.5, newDirection, color, energy / 1.5)
+      Laser.spawn(worldObj, position + 0.5 + newDirection, position + 0.5, newDirection, color, energy / 1.2)
     }
 
     return true

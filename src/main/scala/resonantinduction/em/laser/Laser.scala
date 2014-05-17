@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material
 import scala.collection.mutable
 import net.minecraft.item.ItemDye
 import java.awt.Color
+import net.minecraft.init.Blocks
 
 /**
  * @author Calclavia
@@ -19,8 +20,9 @@ object Laser
   val minEnergy = 100D
   val maxEnergy = 5000D
 
-  val minEnergyToMine = 800D
+  val minEnergyToMine = 1000D
   val maxEnergyToMine = 100000D
+  val minBurnEnergy = minEnergyToMine / 2
 
   var lastUpdateTime = 0L
   val currentBlockEnergy = mutable.HashMap[Vector3, Double]()
@@ -113,6 +115,14 @@ object Laser
               else
               {
                 //accumilatedBlockEnergy.remove(hitBlockPos)
+              }
+
+              /**
+               * Catch Fire
+               */
+              if(energyOnBlock > minBurnEnergy && hitBlock.getMaterial.getCanBurn)
+              {
+                world.setBlock(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, Blocks.fire)
               }
             }
 

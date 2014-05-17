@@ -31,7 +31,8 @@ class TileLaserReceiver extends TileBase with ILaserHandler
     if (hit.sideHit == direction.ordinal)
     {
       ElectromagneticCoherence.proxy.renderLaser(world, renderStart, position + 0.5 + new Vector3(direction) * 0.3, color, energy)
-      this.energy += energy
+      //TODO: Change this
+      this.energy = energy
       return true
     }
 

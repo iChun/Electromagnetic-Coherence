@@ -4,7 +4,7 @@ import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.world.World
 import net.minecraft.util.MovingObjectPosition
 import scala.collection.mutable
-import net.minecraft.block.Block
+import net.minecraft.block.{BlockStainedGlass, Block}
 
 /**
  * @author Calclavia
@@ -42,6 +42,7 @@ object Laser
            * Handle Mirror Reflection
            */
           val hitTile = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ)
+          val hitBlock = world.getBlock(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
 
           if (hitTile.isInstanceOf[ILaserHandler])
           {
@@ -49,6 +50,10 @@ object Laser
             {
               ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
             }
+          }
+          else if (hitBlock.isInstanceOf[BlockStainedGlass])
+          {
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
           }
           else
           {
@@ -67,18 +72,21 @@ object Laser
             if (energyOnBlock > minEnergyToMine)
             {
               /**
-               * The laser can mine the block!
+               * The laser can mine the hitBlock!
                */
               val accumulatedEnergy = (if (accumilatedBlockEnergy.contains(hitBlockPos)) accumilatedBlockEnergy(hitBlockPos) else 0) + energy
               accumilatedBlockEnergy.put(hitBlockPos, accumulatedEnergy)
 
-              val block = world.getBlock(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
-              world.destroyBlockInWorldPartially(Block.blockRegistry.getIDForObject(block), hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, (accumulatedEnergy / maxEnergyToMine * 10).toInt)
+              if (!world.isRemote)
+                world.destroyBlockInWorldPartially(Block.blockRegistry.getIDForObject(hitBlock), hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, (accumulatedEnergy / maxEnergyToMine * 10).toInt)
 
               if (accumulatedEnergy > maxEnergyToMine)
               {
-                block.dropBlockAsItem(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, world.getBlockMetadata(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt), 0)
-                world.setBlockToAir(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
+                if (!world.isRemote)
+                {
+                  hitBlock.dropBlockAsItem(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, world.getBlockMetadata(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt), 0)
+                  world.setBlockToAir(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
+                }
                 accumilatedBlockEnergy.remove(hitBlockPos)
               }
             }

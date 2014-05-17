@@ -1,4 +1,4 @@
-package resonantinduction.em.laser
+package resonantinduction.em.laser.device
 
 import net.minecraft.world.World
 import net.minecraft.client.particle.EntityFX

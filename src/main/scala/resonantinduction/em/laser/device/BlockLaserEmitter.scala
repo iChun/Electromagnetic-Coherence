@@ -1,4 +1,4 @@
-package resonantinduction.em.laser
+package resonantinduction.em.laser.device
 
 import net.minecraft.block.{BlockPistonBase, BlockContainer}
 import net.minecraft.block.material.Material

@@ -4,9 +4,9 @@ import cpw.mods.fml.common.{FMLLog, SidedProxy, Mod}
 import cpw.mods.fml.common.Mod.EventHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
-import resonantinduction.em.laser.BlockLaserEmitter
 import net.minecraft.util.Vec3
 import net.minecraftforge.client.model.AdvancedModelLoader
+import resonantinduction.em.laser.device.BlockLaserEmitter
 
 /**
  * @author Calclavia

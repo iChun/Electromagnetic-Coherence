@@ -2,7 +2,7 @@ package resonantinduction.em
 
 import net.minecraft.world.World
 import cpw.mods.fml.common.registry.GameRegistry
-import resonantinduction.em.laser.TileLaserEmitter
+import resonantinduction.em.laser.device.TileLaserEmitter
 
 /**
  * @author Calclavia

@@ -1,9 +1,9 @@
 package resonantinduction.em
 
 import cpw.mods.fml.client.FMLClientHandler
-import resonantinduction.em.laser.{RenderLaserEmitter, TileLaserEmitter, EntityLaserFx}
 import net.minecraft.world.World
 import cpw.mods.fml.client.registry.ClientRegistry
+import resonantinduction.em.laser.device.{TileLaserEmitter, RenderLaserEmitter, EntityLaserFx}
 
 /**
  * @author Calclavia

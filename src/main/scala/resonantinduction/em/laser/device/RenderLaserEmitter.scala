@@ -1,4 +1,4 @@
-package resonantinduction.em.laser
+package resonantinduction.em.laser.device
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.tileentity.TileEntity

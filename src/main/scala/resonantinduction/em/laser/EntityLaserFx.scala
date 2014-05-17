@@ -38,7 +38,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vecto
 
   particleScale = 0.2f
   particleMaxAge = life
-  particleAlpha = 1 / detail.asInstanceOf[Float]
+  particleAlpha = 1 / (detail.asInstanceOf[Float] / 1.5f)
   particleRed = color.x.toFloat
   particleGreen = color.y.toFloat
   particleBlue = color.z.toFloat

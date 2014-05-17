@@ -62,7 +62,7 @@ object Laser
           }
           else if (hitBlock.getMaterial == Material.glass)
           {
-            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitBlockPos + 0.5, color)
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color)
             var newColor = color
 
             if (hitBlock.isInstanceOf[BlockStainedGlass] || hitBlock.isInstanceOf[BlockStainedGlassPane])
@@ -71,7 +71,7 @@ object Laser
               newColor = new Vector3(dyeColor.getRed, dyeColor.getGreen, dyeColor.getBlue).normalize
             }
 
-            spawn(world, hitBlockPos + 0.5 + direction, hitBlockPos + 0.5, direction, newColor, energy)
+            spawn(world, hitVec + direction, hitVec, direction, newColor, energy)
           }
           else
           {

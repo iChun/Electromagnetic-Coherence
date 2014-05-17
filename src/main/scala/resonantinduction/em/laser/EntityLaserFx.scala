@@ -34,9 +34,8 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
 
   val length = start.distance(end)
 
-  val cross = start x end
-  val angle = Math.acos((start $ end) / (start.magnitude * end.magnitude))
-  val angles = cross.normalized.toEuler(angle)
+  val difference = end - start
+  val angles = new Vector3(Math.toDegrees(Math.atan2(difference.x, difference.z)), Math.toDegrees(-Math.atan2(difference.y, Math.hypot(difference.z, difference.x))), 0)
 
   val modifierTranslation = (length / 2) + endSize;
 
@@ -76,11 +75,10 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
     /**
      * Rotate the beam
      */
-    glRotated(angle, cross.x, cross.y, cross.z)
-    //glRotated(Math.toDegrees(angles._1), 1, 0, 0)
-    //glRotated(Math.toDegrees(angles._2), 0, 1, 0)
-    //glRotated(Math.toDegrees(angles._3), 0, 0, 1)
-    //glRotated(90, 0, 0, 1)
+    glRotated(angles.x, 0, 1, 0)
+    glRotated(angles.y, 1, 0, 0)
+
+    glRotated(90, 1, 0, 0)
 
     val time = worldObj.getTotalWorldTime()
 
@@ -131,7 +129,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
 
       /**
        * Render End
-      */
+       */
       glPushMatrix()
       glTranslated(0, modifierTranslation, 0)
       glRotatef(180, 1, 0, 0)

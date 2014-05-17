@@ -116,39 +116,4 @@ class Vector3
   override def toString = "Vector3[" + x + "," + y + "," + z + "]"
 
   def distance(other: Vector3) = (other - this).magnitude
-
-  def toEuler(angle: Double): Tuple3[Double, Double, Double] =
-  {
-    val s = Math.sin(angle);
-    val c = Math.cos(angle);
-    val t = 1 - c;
-
-    var yaw = 0D
-    var pitch = 0D
-    var roll = 0D
-
-    if ((x * y * t + z * s) > 0.998)
-    {
-      // north pole singularity detected
-      yaw = 2 * Math.atan2(x * Math.sin(angle / 2), Math.cos(angle / 2));
-      pitch = Math.PI / 2;
-      roll = 0;
-      return new Tuple3(yaw, pitch, roll)
-    }
-
-    if ((x * y * t + z * s) < -0.998)
-    {
-      // south pole singularity detected
-      yaw = -2 * Math.atan2(x * Math.sin(angle / 2), Math.cos(angle / 2));
-      pitch = -Math.PI / 2;
-      roll = 0;
-      return new Tuple3(yaw, pitch, roll)
-    }
-
-    yaw = Math.atan2(y * s - x * z * t, 1 - (y * y + z * z) * t);
-    pitch = Math.asin(x * y * t + z * s);
-    roll = Math.atan2(x * s - y * z * t, 1 - (x * x + z * z) * t);
-
-    return new Tuple3(yaw, pitch, roll)
-  }
 }

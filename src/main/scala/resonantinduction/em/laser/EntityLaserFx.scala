@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.entity.RenderManager
  */
 class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) extends EntityFX(par1World, start.x, start.y, start.z, 0.0D, 0.0D, 0.0D)
 {
+  val midPoint = (end + start) / 2
+
   val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserMiddle.png")
 
   val length = start.distance(end)
@@ -66,17 +68,19 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
 
     GL11.glRotated(90, 0, 0, 1)
 
+    val thickness = 0.15
     val time = worldObj.getTotalWorldTime()
+
     /**
      * Tessellate laser
      */
     tessellator.startDrawingQuads()
     tessellator.setBrightness(200)
     tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
-    tessellator.addVertexWithUV(-0.5, -0.5, 0, 0, 0)
-    tessellator.addVertexWithUV(-0.5, 0.5, 0, 0, 64)
-    tessellator.addVertexWithUV(0.5, 0.5, 0, 64, 64)
-    tessellator.addVertexWithUV(0.5, -0.5, 0, 64, 0)
+    tessellator.addVertexWithUV(-thickness, -length, 0, 0, 0)
+    tessellator.addVertexWithUV(-thickness, length , 0, 0, 1)
+    tessellator.addVertexWithUV(thickness, length , 0, 1, 1)
+    tessellator.addVertexWithUV(thickness, -length , 0, 1, 0)
     tessellator.draw()
 
     GL11.glPopMatrix()

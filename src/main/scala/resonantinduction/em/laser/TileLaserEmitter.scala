@@ -21,14 +21,16 @@ class TileLaserEmitter extends TileEntity
 
     if (energy > 0)
     {
-      val hit = worldObj.rayTraceBlocks((position + new Vector3(direction)).toVec3, (position + (new Vector3(direction) * 100)).toVec3)
+      val startPos = position + new Vector3(direction) + 0.5;
+      val maxPos = position + (new Vector3(direction) * 100) + 0.5;
+      val hit = worldObj.rayTraceBlocks(startPos.toVec3, maxPos.toVec3)
 
       if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
       {
         val hitVec = new Vector3(hit.hitVec)
         val hitBlock = new Vector3(hit.blockX, hit.blockY, hit.blockZ)
 
-        ElectromagneticCoherence.proxy.renderLaser(worldObj, position, hitVec)
+        ElectromagneticCoherence.proxy.renderLaser(worldObj, startPos, hitVec + 0.5)
       }
 
       energy -= 10;

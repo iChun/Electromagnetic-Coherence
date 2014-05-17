@@ -109,7 +109,7 @@ class Vector3
 
   def magnitude = Math.sqrt(magnitudeSquared)
 
-  def normalized = this / magnitude
+  def normalize = this / magnitude
 
   override def clone = new Vector3(x, y, z)
 
@@ -128,7 +128,7 @@ class Vector3
   {
     var angle = newAngle
     val matrix = new Array[Double](16)
-    val axis = this.clone().normalized
+    val axis = this.clone().normalize
     val x = axis.x
     val y = axis.y
     val z = axis.z
@@ -159,4 +159,6 @@ class Vector3
     translation.z = z
     return translation
   }
+
+  def eulerAngles = new Vector3(Math.toDegrees(Math.atan2(x, z)), Math.toDegrees(-Math.atan2(y, Math.hypot(z, x))), 0)
 }

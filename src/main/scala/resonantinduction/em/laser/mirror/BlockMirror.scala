@@ -23,7 +23,7 @@ class BlockMirror extends BlockContainer(Material.rock)
   override def onBlockActivated(world: World, x: Int, y: Int, z: Int, player: EntityPlayer, side: Int, hitX: Float, hitY: Float, hitZ: Float): Boolean =
   {
     val mirror = world.getTileEntity(x, y, z).asInstanceOf[TileMirror]
-    mirror.normal = (new Vector3(hitX, hitY, hitZ) - 0.5).normalized
+    mirror.normal = (new Vector3(hitX, hitY, hitZ) - 0.5).normalize
     return true
   }
 

@@ -36,7 +36,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
   val length = start.distance(end)
 
   val difference = end - start
-  val angles = new Vector3(Math.toDegrees(Math.atan2(difference.x, difference.z)), Math.toDegrees(-Math.atan2(difference.y, Math.hypot(difference.z, difference.x))), 0)
+  val angles = difference.eulerAngles
 
   val modifierTranslation = (length / 2) + endSize;
 

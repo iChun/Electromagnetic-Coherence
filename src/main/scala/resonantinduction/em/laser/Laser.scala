@@ -40,10 +40,10 @@ object Laser
              * Calculate Reflection
              */
             val angle = Math.acos(direction $ mirror.normal)
-            val newDirection = (direction.clone.rotate(angle, mirror.normal)).normalized
+            val newDirection = (direction.clone.rotate(180, mirror.normal)).normalize
             //direction.clone.rotate(angle, mirror.normal)
 
-            spawn(world, mirror.position + 0.5 + newDirection, newDirection, energy / 2)
+            spawn(world, mirror.position + 0.5 + newDirection, mirror.normal, energy / 2)
           }
           else
           {

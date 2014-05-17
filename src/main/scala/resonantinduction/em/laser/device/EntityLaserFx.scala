@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11._
 import cpw.mods.fml.client.FMLClientHandler
 import resonantinduction.em.{Vector3, ElectromagneticCoherence}
 import net.minecraft.util.ResourceLocation
-import net.minecraft.client.renderer.texture.TextureMap
 
 /**
  * @author Calclavia
@@ -18,6 +17,8 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
   val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserMiddle.png")
   val laserEndTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserEnd.png")
   val laserNoiseTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/noise.png")
+  val particleTextures = new ResourceLocation("textures/particle/particles.png")
+
   val endSize = 0.0999
   val detail = 36
   val rotationSpeed = 15
@@ -180,7 +181,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
 
     glPopMatrix()
 
-    FMLClientHandler.instance().getClient().renderEngine.bindTexture(TextureMap.locationBlocksTexture)
+    FMLClientHandler.instance().getClient().renderEngine.bindTexture(particleTextures)
     tessellator.startDrawingQuads()
   }
 

@@ -2,7 +2,7 @@ package resonantinduction.em
 
 import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.ForgeDirection
-import net.minecraft.util.Vec3
+import net.minecraft.util.{MovingObjectPosition, Vec3}
 import net.minecraft.nbt.NBTTagCompound
 
 /**
@@ -172,6 +172,11 @@ class Vector3
   }
 
   def eulerAngles = new Vector3(Math.toDegrees(Math.atan2(x, z)), Math.toDegrees(-Math.atan2(y, Math.hypot(z, x))), 0)
+
+  def rayTrace(end: Vector3): MovingObjectPosition =
+  {
+    return world.rayTraceBlocks(start.toVec3, maxPos.toVec3)
+  }
 
   def writeToNBT(nbt: NBTTagCompound)
   {

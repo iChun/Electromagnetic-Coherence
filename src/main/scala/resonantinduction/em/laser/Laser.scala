@@ -24,7 +24,7 @@ object Laser
     if (energy > 10)
     {
       val maxPos = start + (direction * maxDistance)
-      val hit = world.rayTraceBlocks(start.toVec3, maxPos.toVec3)
+      val hit = start.rayTrace(maxPos)
 
       if (hit != null)
       {
@@ -48,9 +48,13 @@ object Laser
              */
             val angle = Math.acos(direction $ mirror.normal)
             val axisOfReflection = direction x mirror.normal
-            val newDirection = (direction.clone.rotate(Math.toDegrees(2 * angle), axisOfReflection)).normalize
+            val rotateAngle = 180 - Math.toDegrees(2 * angle)
 
-            spawn(world, mirror.position + 0.5 + newDirection, mirror.position + 0.5, newDirection, energy / 2)
+            if (Math.toDegrees(rotateAngle) < 180)
+            {
+              val newDirection = (direction.clone.rotate(rotateAngle, axisOfReflection)).normalize
+              spawn(world, mirror.position + 0.5 + newDirection, mirror.position + 0.5, newDirection, energy / 2)
+            }
           }
           else
           {

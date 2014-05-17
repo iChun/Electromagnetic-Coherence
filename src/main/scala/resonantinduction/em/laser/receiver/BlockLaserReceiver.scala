@@ -35,7 +35,7 @@ class BlockLaserReceiver extends BlockContainer(Material.rock)
 
   override def isProvidingStrongPower(access: IBlockAccess, x: Int, y: Int, z: Int, metadata: Int): Int =
   {
-    return Math.min(Math.ceil(access.getTileEntity(x, y, z).asInstanceOf[TileLaserReceiver].energy / 100), 15).toInt
+    return Math.min(Math.ceil(access.getTileEntity(x, y, z).asInstanceOf[TileLaserReceiver].energy / 200), 15).toInt
   }
 
   override def createNewTileEntity(world: World, metadata: Int): TileEntity =

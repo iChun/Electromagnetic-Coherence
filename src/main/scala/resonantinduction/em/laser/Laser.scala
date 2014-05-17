@@ -89,8 +89,12 @@ object Laser
 
             ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec)
           }
+
+          return
         }
       }
+
+      ElectromagneticCoherence.proxy.renderLaser(world, renderStart, maxPos)
     }
   }
 }

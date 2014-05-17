@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation
 /**
  * @author Calclavia
  */
-class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vector3, life: Int) extends EntityFX(par1World, start.x, start.y, start.z)
+class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vector3, energy: Double) extends EntityFX(par1World, start.x, start.y, start.z)
 {
   val laserStartTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserStart.png")
   val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserMiddle.png")
@@ -19,9 +19,12 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vecto
   val laserNoiseTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/noise.png")
   val particleTextures = new ResourceLocation("textures/particle/particles.png")
 
-  val endSize = 0.0999
+  val energyPercentage = Math.min(energy / Laser.maxEnergy, 1).toFloat
+
+  val endSize = 0.001 + (0.244 - 0.001) * energyPercentage
   val detail = 36
-  val rotationSpeed = 15
+  val rotationSpeed = 18
+  val life = 1
 
   /**
    * Set position
@@ -36,9 +39,9 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vecto
   prevPosY = posY
   prevPosZ = posZ
 
-  particleScale = 0.2f
+  particleScale = 0.5f * energyPercentage
   particleMaxAge = life
-  particleAlpha = 1 / (detail.asInstanceOf[Float] / 1.5f)
+  particleAlpha = 1 / (detail.asInstanceOf[Float] / (5f * energyPercentage))
   particleRed = color.x.toFloat
   particleGreen = color.y.toFloat
   particleBlue = color.z.toFloat

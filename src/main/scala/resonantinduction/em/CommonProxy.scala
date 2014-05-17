@@ -17,12 +17,7 @@ class CommonProxy
     GameRegistry.registerTileEntity(classOf[TileMirror], "RIMirror")
   }
 
-  def renderLaser(world: World, start: Vector3, end: Vector3, color: Vector3)
-  {
-    renderLaser(world, start, end, color, 1)
-  }
-
-  def renderLaser(world: World, start: Vector3, end: Vector3, color: Vector3, life: Int)
+  def renderLaser(world: World, start: Vector3, end: Vector3, color: Vector3, energy: Double)
   {
 
   }

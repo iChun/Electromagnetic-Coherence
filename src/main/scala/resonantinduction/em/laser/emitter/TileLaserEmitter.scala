@@ -1,9 +1,7 @@
 package resonantinduction.em.laser.emitter
 
-import net.minecraft.tileentity.TileEntity
+import resonantinduction.em.laser.{Laser, TileBase}
 import resonantinduction.em.Vector3
-import net.minecraftforge.common.util.ForgeDirection
-import resonantinduction.em.laser.{TileBase, Laser}
 
 /**
  * @author Calclavia
@@ -16,7 +14,7 @@ class TileLaserEmitter extends TileBase
   {
     if (isPowered())
     {
-      energy += 500
+      energy += world.getStrongestIndirectPower(x, y, z) * (Laser.maxEnergy / 15)
     }
 
     if (energy > 0)

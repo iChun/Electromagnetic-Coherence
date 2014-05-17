@@ -16,6 +16,9 @@ object Laser
 {
   val maxDistance = 100
 
+  val minEnergy = 100D
+  val maxEnergy = 5000D
+
   val minEnergyToMine = 800D
   val maxEnergyToMine = 100000D
 
@@ -35,7 +38,7 @@ object Laser
 
   def spawn(world: World, start: Vector3, renderStart: Vector3, direction: Vector3, color: Vector3, energy: Double)
   {
-    if (energy > 10)
+    if (energy > minEnergy)
     {
       val maxPos = start + (direction * maxDistance)
       val hit = start.rayTrace(world, maxPos)
@@ -57,12 +60,12 @@ object Laser
           {
             if (!hitTile.asInstanceOf[ILaserHandler].onLaserHit(renderStart, direction, hit, color, energy))
             {
-              ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color)
+              ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color, energy)
             }
           }
           else if (hitBlock.getMaterial == Material.glass)
           {
-            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color)
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color, energy)
             var newColor = color
 
             if (hitBlock.isInstanceOf[BlockStainedGlass] || hitBlock.isInstanceOf[BlockStainedGlassPane])
@@ -71,56 +74,56 @@ object Laser
               newColor = new Vector3(dyeColor.getRed, dyeColor.getGreen, dyeColor.getBlue).normalize
             }
 
-            spawn(world, hitVec + direction, hitVec, direction, newColor, energy)
+            spawn(world, hitVec + direction, hitVec, direction, ((newColor + color) / 2).normalize, energy)
           }
           else
           {
             /**
              * Attempt to burn block
              */
-            if (lastUpdateTime != world.getWorldTime)
+            if (!world.isRemote)
             {
-              currentBlockEnergy.clear
-              lastUpdateTime = world.getWorldTime
-            }
+              if (lastUpdateTime != world.getWorldTime)
+              {
+                currentBlockEnergy.clear
+                lastUpdateTime = world.getWorldTime
+              }
 
-            val energyOnBlock = (if (currentBlockEnergy.contains(hitBlockPos)) currentBlockEnergy(hitBlockPos) else 0) + energy
-            currentBlockEnergy.put(hitBlockPos, energyOnBlock)
+              val energyOnBlock = (if (currentBlockEnergy.contains(hitBlockPos)) currentBlockEnergy(hitBlockPos) else 0) + energy
+              currentBlockEnergy.put(hitBlockPos, energyOnBlock)
 
-            if (energyOnBlock > minEnergyToMine)
-            {
-              /**
-               * The laser can mine the hitBlock!
-               */
-              val accumulatedEnergy = (if (accumilatedBlockEnergy.contains(hitBlockPos)) accumilatedBlockEnergy(hitBlockPos) else 0) + energy
-              accumilatedBlockEnergy.put(hitBlockPos, accumulatedEnergy)
+              if (energyOnBlock > minEnergyToMine)
+              {
+                /**
+                 * The laser can mine the hitBlock!
+                 */
+                val accumulatedEnergy = (if (accumilatedBlockEnergy.contains(hitBlockPos)) accumilatedBlockEnergy(hitBlockPos) else 0) + energy
+                accumilatedBlockEnergy.put(hitBlockPos, accumulatedEnergy)
 
-              if (!world.isRemote)
                 world.destroyBlockInWorldPartially(Block.blockRegistry.getIDForObject(hitBlock), hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, (accumulatedEnergy / maxEnergyToMine * 10).toInt)
 
-              if (accumulatedEnergy > maxEnergyToMine)
-              {
-                if (!world.isRemote)
+                if (accumulatedEnergy > maxEnergyToMine)
                 {
                   hitBlock.dropBlockAsItem(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, world.getBlockMetadata(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt), 0)
                   world.setBlockToAir(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
+
+                  accumilatedBlockEnergy.remove(hitBlockPos)
                 }
-                accumilatedBlockEnergy.remove(hitBlockPos)
+              }
+              else
+              {
+                //accumilatedBlockEnergy.remove(hitBlockPos)
               }
             }
-            else
-            {
-              //accumilatedBlockEnergy.remove(hitBlockPos)
-            }
 
-            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color)
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color, energy)
           }
 
           return
         }
       }
 
-      ElectromagneticCoherence.proxy.renderLaser(world, renderStart, maxPos, color)
+      ElectromagneticCoherence.proxy.renderLaser(world, renderStart, maxPos, color, energy)
     }
   }
 

@@ -3,7 +3,7 @@ package resonantinduction.em.laser.device
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.Vector3
 import net.minecraftforge.common.util.ForgeDirection
-import resonantinduction.em.laser.LaserManager
+import resonantinduction.em.laser.Laser
 
 /**
  * @author Calclavia
@@ -16,13 +16,13 @@ class TileLaserEmitter extends TileEntity
   {
     if (isPowered())
     {
-      energy += 10
+      energy += 100
     }
 
     if (energy > 0)
     {
-      LaserManager.spawn(worldObj, position + new Vector3(direction) * 0.6 + 0.5, new Vector3(direction))
-      energy -= 10;
+      Laser.spawn(worldObj, position + new Vector3(direction) * 0.6 + 0.5, new Vector3(direction), energy)
+      energy = 0;
     }
   }
 

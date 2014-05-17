@@ -24,7 +24,6 @@ class BlockMirror extends BlockContainer(Material.rock)
   {
     val mirror = world.getTileEntity(x, y, z).asInstanceOf[TileMirror]
     mirror.normal = (new Vector3(hitX, hitY, hitZ) - 0.5).normalized
-    println(mirror.normal)
     return true
   }
 

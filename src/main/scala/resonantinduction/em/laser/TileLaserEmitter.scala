@@ -32,7 +32,7 @@ class TileLaserEmitter extends TileEntity
           val hitVec = new Vector3(hit.hitVec)
           val hitBlock = new Vector3(hit.blockX, hit.blockY, hit.blockZ)
 
-          ElectromagneticCoherence.proxy.renderLaser(worldObj, startPos, hitVec + 0.5)
+          ElectromagneticCoherence.proxy.renderLaser(worldObj, position + new Vector3(direction) * 0.6 + 0.5, hitVec)
         }
 
         energy -= 10;

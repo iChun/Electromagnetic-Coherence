@@ -3,24 +3,42 @@ package resonantinduction.em.laser
 import net.minecraft.world.World
 import net.minecraft.client.particle.EntityFX
 import net.minecraft.client.renderer.Tessellator
-import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL11._
 import cpw.mods.fml.client.FMLClientHandler
 import resonantinduction.em.{Vector3, ElectromagneticCoherence}
 import net.minecraft.util.ResourceLocation
 import net.minecraft.client.renderer.texture.TextureMap
-import net.minecraft.client.renderer.entity.RenderManager
 
 /**
  * @author Calclavia
  */
-class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) extends EntityFX(par1World, start.x, start.y, start.z, 0.0D, 0.0D, 0.0D)
+class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) extends EntityFX(par1World, start.x, start.y, start.z)
 {
-  val midPoint = (end + start) / 2
-
+  val laserStartTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserStart.png")
   val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserMiddle.png")
+  val laserEndTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserEnd.png")
+  val endSize = 0.0999
+  val detail = 36
+  val rotationSpeed = 15
+
+  val midPoint = (end + start) / 2
+  posX = midPoint.x
+  posY = midPoint.y
+  posZ = midPoint.z
+  particleScale = 0.2f
+  particleMaxAge = life
+  particleAlpha = 1 / detail.asInstanceOf[Float]
+  particleRed = 1
+  particleGreen = 0.1f
+  particleBlue = 0.1f
 
   val length = start.distance(end)
-  this.particleMaxAge = life
+
+  val cross = start x end
+  val angle = Math.acos((start $ end) / (start.magnitude * end.magnitude))
+  val angles = cross.normalized.toEuler(angle)
+
+  val modifierTranslation = (length / 2) + endSize;
 
   override def onUpdate
   {
@@ -34,56 +52,107 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, life: Int) e
     }
 
     particleAge += 1
-
-    //moveEntity(motionX, motionY, motionZ)
   }
 
   override def renderParticle(tessellator: Tessellator, par2: Float, par3: Float, par4: Float, par5: Float, par6: Float, par7: Float)
   {
     tessellator.draw()
 
-    GL11.glPushMatrix()
+    glPushMatrix()
 
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
-
-    FMLClientHandler.instance.getClient.renderEngine.bindTexture(laserMiddleTexture)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+    glEnable(3042);
+    glColor4f(1, 1, 1, 1)
 
     /**
      * Translation
      */
-    GL11.glEnable(3042);
-    GL11.glColor4f(1, 1, 1, 1)
-
     val f11 = this.prevPosX + (this.posX - this.prevPosX) * par2 - EntityFX.interpPosX
     val f12 = this.prevPosY + (this.posY - this.prevPosY) * par2 - EntityFX.interpPosY
     val f13 = this.prevPosZ + (this.posZ - this.prevPosZ) * par2 - EntityFX.interpPosZ
 
-    GL11.glTranslated(f11, f12, f13)
+    glTranslated(f11, f12, f13)
 
     /**
-     * Rotate to face player
+     * Rotate the beam
      */
-    GL11.glRotated(-RenderManager.instance.playerViewY, 0, 1, 0)
-    GL11.glRotated(RenderManager.instance.playerViewX, 1, 0, 0)
+    glRotated(angle, cross.x, cross.y, cross.z)
+    //glRotated(Math.toDegrees(angles._1), 1, 0, 0)
+    //glRotated(Math.toDegrees(angles._2), 0, 1, 0)
+    //glRotated(Math.toDegrees(angles._3), 0, 0, 1)
+    //glRotated(90, 0, 0, 1)
 
-    GL11.glRotated(90, 0, 0, 1)
-
-    val thickness = 0.15
     val time = worldObj.getTotalWorldTime()
 
     /**
      * Tessellate laser
      */
-    tessellator.startDrawingQuads()
-    tessellator.setBrightness(200)
-    tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
-    tessellator.addVertexWithUV(-thickness, -length, 0, 0, 0)
-    tessellator.addVertexWithUV(-thickness, length , 0, 0, 1)
-    tessellator.addVertexWithUV(thickness, length , 0, 1, 1)
-    tessellator.addVertexWithUV(thickness, -length , 0, 1, 0)
-    tessellator.draw()
+    glPushMatrix()
+    glRotatef(time % (360 / rotationSpeed) * rotationSpeed + rotationSpeed * par2, 0, 1, 0)
 
-    GL11.glPopMatrix()
+    for (a <- 0 to detail)
+    {
+      glRotatef(a * 360 / detail, 0, 1, 0)
+
+      /**
+       * Render Cap
+       */
+      glPushMatrix()
+      glTranslated(0, -modifierTranslation, 0)
+      glRotatef(180, 1, 0, 0)
+
+      FMLClientHandler.instance.getClient.renderEngine.bindTexture(laserStartTexture)
+
+      tessellator.startDrawingQuads()
+      tessellator.setBrightness(200)
+      tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
+      tessellator.addVertexWithUV(-particleScale, -particleScale, 0, 0, 0)
+      tessellator.addVertexWithUV(-particleScale, particleScale, 0, 0, 1)
+      tessellator.addVertexWithUV(particleScale, particleScale, 0, 1, 1)
+      tessellator.addVertexWithUV(particleScale, -particleScale, 0, 1, 0)
+      tessellator.draw()
+
+      glPopMatrix()
+
+      /**
+       * Render Middle
+       */
+      FMLClientHandler.instance.getClient.renderEngine.bindTexture(laserMiddleTexture)
+
+      tessellator.startDrawingQuads()
+      tessellator.setBrightness(200)
+      tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
+      tessellator.addVertexWithUV(-particleScale, -length / 2 + endSize, 0, 0, 0)
+      tessellator.addVertexWithUV(-particleScale, length / 2 - endSize, 0, 0, 1)
+      tessellator.addVertexWithUV(particleScale, length / 2 - endSize, 0, 1, 1)
+      tessellator.addVertexWithUV(particleScale, -length / 2 + endSize, 0, 1, 0)
+      tessellator.draw()
+
+
+      /**
+       * Render End
+      */
+      glPushMatrix()
+      glTranslated(0, modifierTranslation, 0)
+      glRotatef(180, 1, 0, 0)
+
+      FMLClientHandler.instance.getClient.renderEngine.bindTexture(laserEndTexture)
+
+      tessellator.startDrawingQuads()
+      tessellator.setBrightness(200)
+      tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
+      tessellator.addVertexWithUV(-particleScale, -particleScale, 0, 0, 0)
+      tessellator.addVertexWithUV(-particleScale, particleScale, 0, 0, 1)
+      tessellator.addVertexWithUV(particleScale, particleScale, 0, 1, 1)
+      tessellator.addVertexWithUV(particleScale, -particleScale, 0, 1, 0)
+      tessellator.draw()
+
+      glPopMatrix()
+    }
+
+    glPopMatrix()
+
+    glPopMatrix()
 
     FMLClientHandler.instance().getClient().renderEngine.bindTexture(TextureMap.locationBlocksTexture)
     tessellator.startDrawingQuads()

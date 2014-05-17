@@ -16,7 +16,7 @@ class TileLaserEmitter extends TileEntity
   {
     if (isPowered())
     {
-      energy += 100
+      energy += 500
     }
 
     if (energy > 0)

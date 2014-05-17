@@ -4,6 +4,8 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.ForgeDirection
 import net.minecraft.util.{MovingObjectPosition, Vec3}
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.world.World
+import java.lang.Double.doubleToLongBits
 
 /**
  * @author Calclavia
@@ -122,10 +124,6 @@ class Vector3
 
   def normalize = this / magnitude
 
-  override def clone = new Vector3(x, y, z)
-
-  override def toString = "Vector3[" + x + "," + y + "," + z + "]"
-
   def distance(other: Vector3) = (other - this).magnitude
 
   def rotate(angle: Double, axis: Vector3): Vector3 =
@@ -173,9 +171,10 @@ class Vector3
 
   def eulerAngles = new Vector3(Math.toDegrees(Math.atan2(x, z)), Math.toDegrees(-Math.atan2(y, Math.hypot(z, x))), 0)
 
-  def rayTrace(end: Vector3): MovingObjectPosition =
+  def rayTrace(world: World, end: Vector3): MovingObjectPosition =
   {
-    return world.rayTraceBlocks(start.toVec3, maxPos.toVec3)
+    //TODO: Add entity hits
+    return world.rayTraceBlocks(toVec3, end.toVec3)
   }
 
   def writeToNBT(nbt: NBTTagCompound)
@@ -184,4 +183,31 @@ class Vector3
     nbt.setDouble("y", y)
     nbt.setDouble("z", z)
   }
+
+  override def equals(o: Any): Boolean =
+  {
+    if (o.isInstanceOf[Vector3])
+    {
+      val other = o.asInstanceOf[Vector3]
+      return other.x == x && other.y == y && other.z == z
+    }
+
+    return false
+  }
+
+  override def clone = new Vector3(x, y, z)
+
+  override def toString = "Vector3[" + x + "," + y + "," + z + "]"
+
+  override def hashCode(): Int =
+  {
+    val x = doubleToLongBits(this.x)
+    val y = doubleToLongBits(this.y)
+    val z = doubleToLongBits(this.z)
+    var hash = (x ^ (x >>> 32))
+    hash = 31 * hash + y ^ (y >>> 32)
+    hash = 31 * hash + z ^ (z >>> 32)
+    return hash.toInt;
+  }
+
 }

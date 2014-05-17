@@ -6,6 +6,8 @@ import resonantinduction.em.{Vector3, ElectromagneticCoherence}
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.world.World
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.laser.BlockRenderingHandler
 
@@ -16,6 +18,12 @@ class BlockMirror extends BlockContainer(Material.rock)
 {
   setBlockName(ElectromagneticCoherence.PREFIX + "mirror")
   setCreativeTab(CreativeTabs.tabRedstone)
+
+  override def onBlockPlacedBy(world: World, x: Int, y: Int, z: Int, entity: EntityLivingBase, itemStack: ItemStack)
+  {
+    val mirror = world.getTileEntity(x, y, z).asInstanceOf[TileMirror]
+    mirror.normal = new Vector3(-entity.rotationYaw, entity.rotationPitch).normalize
+  }
 
   /**
    * Called upon block activation (right click on the block.)

@@ -3,6 +3,7 @@ package resonantinduction.em
 import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.ForgeDirection
 import net.minecraft.util.Vec3
+import net.minecraft.nbt.NBTTagCompound
 
 /**
  * @author Calclavia
@@ -21,6 +22,11 @@ class Vector3
     this.z = newZ
   }
 
+  def this(yaw: Double, pitch: Double)
+  {
+    this(-Math.sin(Math.toRadians(yaw)), Math.sin(Math.toRadians(pitch)), -Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)))
+  }
+
   def this(tile: TileEntity)
   {
     this(tile.xCoord, tile.yCoord, tile.zCoord)
@@ -29,6 +35,11 @@ class Vector3
   def this(vec: Vec3)
   {
     this(vec.xCoord, vec.yCoord, vec.zCoord)
+  }
+
+  def this(nbt: NBTTagCompound)
+  {
+    this(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"))
   }
 
   def this(dir: ForgeDirection)
@@ -161,4 +172,11 @@ class Vector3
   }
 
   def eulerAngles = new Vector3(Math.toDegrees(Math.atan2(x, z)), Math.toDegrees(-Math.atan2(y, Math.hypot(z, x))), 0)
+
+  def writeToNBT(nbt: NBTTagCompound)
+  {
+    nbt.setDouble("x", x)
+    nbt.setDouble("y", y)
+    nbt.setDouble("z", z)
+  }
 }

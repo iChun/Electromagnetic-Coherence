@@ -6,6 +6,7 @@ import resonantinduction.em.laser.{TileBase, Laser, ILaserHandler}
 import net.minecraft.util.MovingObjectPosition
 import net.minecraft.network.{NetworkManager, Packet}
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity
+import net.minecraftforge.common.util.ForgeDirection
 
 /**
  * @author Calclavia
@@ -14,7 +15,21 @@ class TileMirror extends TileBase with ILaserHandler
 {
   var normal = new Vector3(0, 1, 0)
 
-  override def canUpdate = false
+  override def updateEntity()
+  {
+    if (isPowered())
+    {
+      for (a <- 0 to 5)
+      {
+        val dir = ForgeDirection.getOrientation(a)
+        val axis = new Vector3(dir)
+        val rotateAngle = world.getStrongestIndirectPower(x + axis.x.toInt, y + axis.y.toInt, z + axis.z.toInt) * 3
+        normal = normal.rotate(Math.toRadians(rotateAngle), axis)
+      }
+
+      world.markBlockForUpdate(x, y, z)
+    }
+  }
 
   override def onLaserHit(renderStart: Vector3, incidentDirection: Vector3, hit: MovingObjectPosition, color: Vector3, energy: Double): Boolean =
   {

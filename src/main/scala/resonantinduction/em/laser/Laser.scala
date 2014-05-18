@@ -3,7 +3,7 @@ package resonantinduction.em.laser
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.world.World
 import net.minecraft.util.MovingObjectPosition
-import net.minecraft.block.{BlockStainedGlassPane, BlockStainedGlass, Block}
+import net.minecraft.block.{BlockTNT, BlockStainedGlassPane, BlockStainedGlass, Block}
 import net.minecraft.block.material.Material
 import scala.collection.mutable
 import net.minecraft.item.ItemDye
@@ -128,6 +128,10 @@ object Laser
                  */
                 if (energyOnBlock > minBurnEnergy && hitBlock.getMaterial.getCanBurn)
                 {
+                  if (hitBlock.isInstanceOf[BlockTNT])
+                  {
+                    hitBlock.asInstanceOf[BlockTNT].func_150114_a(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, 1, null)
+                  }
                   world.setBlock(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, Blocks.fire)
                 }
               }

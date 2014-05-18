@@ -30,10 +30,11 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 
 /**
- * A fixed up version of the Forge Techne model importer. Requires specification for the texture
- * size on load in the Techne XML file.
+ * A fixed up version of the Forge's original Techne model importer. Techne model importer, based on iChun's Hats importer
  *
- * @author Calclavia, iChun
+ * You must load your .tcn file and then bind the Techne texture yourself.
+ *
+ * @author iChun, Calclavia
  */
 @SideOnly(Side.CLIENT)
 public class FixedTechneModel extends ModelBase implements IModelCustom

@@ -1,5 +1,5 @@
 ## Electromagnetic Coherence
-Electromagnetic Coherence is a mod about light, lasers and optics.
+Electromagnetic Coherence is a mod about lasers and optics. The mod provides the ability for lasers to be focused and reflected through mirrors. Lasers can be used for mining, energy transfer, killing, smelting and various redstone contraptions.
 
 Copyright (c) Calclavia
 

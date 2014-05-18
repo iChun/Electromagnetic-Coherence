@@ -78,7 +78,7 @@ object Laser
               newColor = new Vector3(dyeColor.getRed, dyeColor.getGreen, dyeColor.getBlue).normalize
             }
 
-            spawn(world, hitVec + direction, hitVec, direction, ((newColor + color) / 2).normalize, energy)
+            spawn(world, hitBlockPos + 0.5 + direction * 0.51, hitVec, direction, ((newColor + color) / 2).normalize, energy)
           }
           else
           {

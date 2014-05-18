@@ -106,6 +106,8 @@ object ElectromagneticCoherence
     GameRegistry.addRecipe(new ShapedOreRecipe(blockMirror, "GGG", "III", "GGG", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot))
     GameRegistry.addRecipe(new ShapedOreRecipe(blockFocusCrystal, "GGG", "GDG", "GGG", 'G': Character, Blocks.glass, 'D': Character, Items.diamond))
 
+    GameRegistry.addRecipe(new ShapedOreRecipe(itemFocusingMatrix, "GGG", "GNG", "GGG", 'G': Character, Items.redstone, 'N': Character, Items.quartz))
+
     proxy.init()
   }
 

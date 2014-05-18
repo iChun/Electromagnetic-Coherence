@@ -22,7 +22,7 @@ class TileLaserEmitter extends TileBase with ILaserHandler
 
     if (energy > 0)
     {
-      Laser.spawn(worldObj, position + new Vector3(direction) * 0.6 + 0.5, new Vector3(direction), energy)
+      Laser.spawn(worldObj, position + 0.5 + new Vector3(direction) * 0.51, position + new Vector3(direction) * 0.6 + 0.5, new Vector3(direction), energy)
       energy = 0;
     }
   }

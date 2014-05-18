@@ -5,10 +5,10 @@ import net.minecraft.world.World
 import net.minecraft.entity.player.EntityPlayer
 import cpw.mods.fml.relauncher.{SideOnly, Side}
 import resonantinduction.em.{TabEC, ElectromagneticCoherence, Vector3}
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{EnumChatFormatting, ChatComponentText}
 import scala.collection.convert.wrapAsScala._
 import scala.util.Random
+import net.minecraft.nbt.NBTTagCompound
 
 /**
  * @author Calclavia
@@ -80,15 +80,14 @@ class ItemFocusingMatrix extends Item
                 val random_index = rand.nextInt(cachedHits.size)
                 val incident = cachedHits(random_index).normalize
 
-                val targetDirection = ((new Vector3(x, y, z) - controlVec)).normalize
+                val targetDirection = (new Vector3(x, y, z) - controlVec).normalize
 
                 if (targetDirection.magnitude > 0)
                 {
-                  val angle = incident $ targetDirection
+                  val angle = Math.acos(incident $ targetDirection)
                   val axis = incident x targetDirection
-                  var focusDirection = incident.clone.rotate(225 + Math.toDegrees(angle / 2), axis).normalize
+                  var focusDirection = incident.clone.rotate(-90 - Math.toDegrees(angle / 2), axis).normalize
 
-                  println(Math.toDegrees(angle))
                   if (focusDirection.magnitude == 0 || focusDirection.magnitude.equals(Double.NaN))
                   {
                     focusDirection = targetDirection

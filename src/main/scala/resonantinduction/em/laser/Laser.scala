@@ -20,9 +20,9 @@ object Laser
   val maxDistance = 100
 
   val minEnergy = 100D
-  val maxEnergy = 5000D
+  val maxEnergy = 8000D
 
-  val minEnergyToMine = 3500D
+  val minEnergyToMine = 4000D
   val maxEnergyToMine = 500000D
   val minBurnEnergy = minEnergyToMine
 
@@ -78,7 +78,7 @@ object Laser
               newColor = new Vector3(dyeColor.getRed, dyeColor.getGreen, dyeColor.getBlue).normalize
             }
 
-            spawn(world, hitVec + direction * 0.9, hitVec, direction, ((newColor + color) / 2).normalize, energy / 1.1)
+            spawn(world, hitVec + direction * 0.9, hitVec, direction, ((newColor + color) / 2).normalize, energy / 1.05)
           }
           else
           {

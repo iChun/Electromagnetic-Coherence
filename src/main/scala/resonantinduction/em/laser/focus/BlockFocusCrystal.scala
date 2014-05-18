@@ -32,10 +32,10 @@ class BlockFocusCrystal extends BlockContainer(Material.rock)
   {
     return new TileFocusCrystal()
   }
-/*
+
   @SideOnly(Side.CLIENT)
   override def getRenderType = BlockRenderingHandler.getRenderId
-*/
+
   override def renderAsNormalBlock = false
 
   override def isOpaqueCube = false

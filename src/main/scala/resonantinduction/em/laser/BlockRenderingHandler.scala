@@ -4,10 +4,11 @@ import cpw.mods.fml.client.registry.{RenderingRegistry, ISimpleBlockRenderingHan
 import net.minecraft.client.renderer.RenderBlocks
 import net.minecraft.world.IBlockAccess
 import net.minecraft.block.Block
-import resonantinduction.em.laser.mirror.{RenderMirror, BlockMirror}
+import resonantinduction.em.laser.mirror.{BlockFocusCrystal, RenderMirror, BlockMirror}
 import resonantinduction.em.laser.emitter.{RenderLaserReceiver, RenderLaserEmitter, BlockLaserEmitter}
 import resonantinduction.em.laser.receiver.BlockLaserReceiver
 import cpw.mods.fml.relauncher.{Side, SideOnly}
+import resonantinduction.em.laser.focus.RenderFocusCrystal
 
 /**
  * @author Calclavia
@@ -26,6 +27,10 @@ object BlockRenderingHandler extends ISimpleBlockRenderingHandler
     else if (block.isInstanceOf[BlockLaserReceiver])
     {
       RenderLaserReceiver.renderItem()
+    }
+    else if (block.isInstanceOf[BlockFocusCrystal])
+    {
+      RenderFocusCrystal.renderItem()
     }
     else if (block.isInstanceOf[BlockMirror])
     {

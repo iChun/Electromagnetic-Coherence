@@ -22,7 +22,7 @@ object Laser
   val minEnergy = 100D
   val maxEnergy = 5000D
 
-  val minEnergyToMine = 4000D
+  val minEnergyToMine = 3500D
   val maxEnergyToMine = 500000D
   val minBurnEnergy = minEnergyToMine
 

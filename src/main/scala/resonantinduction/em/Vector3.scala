@@ -2,10 +2,12 @@ package resonantinduction.em
 
 import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.ForgeDirection
-import net.minecraft.util.{MovingObjectPosition, Vec3}
+import net.minecraft.util.{AxisAlignedBB, MovingObjectPosition, Vec3}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import java.lang.Double.doubleToLongBits
+import net.minecraft.entity.Entity
+import scala.collection.convert.wrapAsScala._
 
 /**
  * @author Calclavia
@@ -32,6 +34,11 @@ class Vector3
   def this(tile: TileEntity)
   {
     this(tile.xCoord, tile.yCoord, tile.zCoord)
+  }
+
+  def this(entity: Entity)
+  {
+    this(entity.posX, entity.posY, entity.posZ)
   }
 
   def this(vec: Vec3)
@@ -173,8 +180,70 @@ class Vector3
 
   def rayTrace(world: World, end: Vector3): MovingObjectPosition =
   {
-    //TODO: Add entity hits
-    return world.rayTraceBlocks(toVec3, end.toVec3)
+    val block = world.rayTraceBlocks(toVec3, end.toVec3)
+    val entity = rayTraceEntities(world, end)
+
+    if (block == null)
+      return entity
+    if (entity == null)
+      return block
+
+    if (distance(new Vector3(block.hitVec)) < distance(new Vector3(entity.hitVec)))
+      return block
+
+    return entity
+  }
+
+  def rayTraceEntities(world: World, end: Vector3): MovingObjectPosition =
+  {
+    var closestEntityMOP: MovingObjectPosition = null
+    var closetDistance = 0D
+
+    val checkDistance = distance(end)
+    val scanRegion = AxisAlignedBB.getBoundingBox(-checkDistance, -checkDistance, -checkDistance, checkDistance, checkDistance, checkDistance).offset(x, y, z)
+
+    val checkEntities = world.getEntitiesWithinAABB(classOf[Entity], scanRegion).map(_.asInstanceOf[Entity])
+
+    checkEntities.foreach(
+      entity =>
+      {
+        if (entity != null && entity.canBeCollidedWith && entity.boundingBox != null)
+        {
+          val border = entity.getCollisionBorderSize
+          val bounds = entity.boundingBox.expand(border, border, border)
+          val hit = bounds.calculateIntercept(toVec3, end.toVec3)
+
+          if (hit != null)
+          {
+
+            if (bounds.isVecInside(toVec3))
+            {
+              if (0 < closetDistance || closetDistance == 0)
+              {
+                closestEntityMOP = new MovingObjectPosition(entity)
+
+                closestEntityMOP.hitVec = hit.hitVec
+                closetDistance = 0
+              }
+            }
+            else
+            {
+              val dist = distance(new Vector3(hit.hitVec))
+
+              if (dist < closetDistance || closetDistance == 0)
+              {
+                closestEntityMOP = new MovingObjectPosition(entity)
+                closestEntityMOP.hitVec = hit.hitVec
+
+                closetDistance = dist
+              }
+            }
+          }
+        }
+      }
+    )
+
+    return closestEntityMOP
   }
 
   def writeToNBT(nbt: NBTTagCompound)

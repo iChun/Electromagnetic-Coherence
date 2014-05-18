@@ -2,7 +2,7 @@ package resonantinduction.em.laser
 
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.world.World
-import net.minecraft.util.MovingObjectPosition
+import net.minecraft.util.{DamageSource, MovingObjectPosition}
 import net.minecraft.block.{BlockTNT, BlockStainedGlassPane, BlockStainedGlass, Block}
 import net.minecraft.block.material.Material
 import scala.collection.mutable
@@ -148,6 +148,21 @@ object Laser
             ElectromagneticCoherence.proxy.renderScorch(world, hitVec - (direction * 0.02), hit.sideHit)
             ElectromagneticCoherence.proxy.renderBlockParticle(world, hitVec, hitBlock, hit.sideHit)
           }
+        }
+        else if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY)
+        {
+          if (energy > minBurnEnergy)
+          {
+            val fireTime = (10 * (energy / maxEnergy)).toInt
+
+            if (fireTime > 0)
+            {
+              hit.entityHit.setFire(fireTime)
+              hit.entityHit.attackEntityFrom(DamageSource.onFire, (20 * (energy / maxEnergy)).toInt)
+            }
+          }
+
+          ElectromagneticCoherence.proxy.renderLaser(world, renderStart, new Vector3(hit.hitVec), color, energy)
         }
 
         return

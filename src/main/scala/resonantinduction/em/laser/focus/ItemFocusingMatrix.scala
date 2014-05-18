@@ -85,14 +85,13 @@ class ItemFocusingMatrix extends Item
                 if (targetDirection.magnitude > 0)
                 {
                   val angle = incident $ targetDirection
+                  val axis = incident x targetDirection
+                  var focusDirection = incident.clone.rotate(225 + Math.toDegrees(angle / 2), axis).normalize
 
-                  var focusDirection = incident.clone.rotate(225 + Math.toDegrees(angle / 2), incident x targetDirection).normalize
-
-                  if (focusDirection.magnitude == 0)
+                  if (focusDirection.magnitude == 0 || focusDirection.magnitude.equals(Double.NaN))
                   {
                     focusDirection = targetDirection
                   }
-                  println(targetDirection)
 
                   controlTile.asInstanceOf[IFocus].focus(controlVec + 0.5 + focusDirection)
                 }

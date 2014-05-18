@@ -67,7 +67,7 @@ class ItemFocusingMatrix extends Item
             val focusDevice = controlTile.asInstanceOf[IFocus]
             val clickPos = new Vector3(x, y, z) + 0.5
 
-            if (focusDevice.getFocus == ((clickPos - controlVec) - 0.5).normalize)
+            if ((focusDevice.getFocus - ((clickPos - controlVec) - 0.5).normalize).magnitude < 0.1)
             {
               val cachedHits = focusDevice.getCacheDirections
 

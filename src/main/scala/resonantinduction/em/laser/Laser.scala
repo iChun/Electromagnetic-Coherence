@@ -9,6 +9,7 @@ import scala.collection.mutable
 import net.minecraft.item.ItemDye
 import java.awt.Color
 import net.minecraft.init.Blocks
+import net.minecraft.tileentity.TileEntityFurnace
 
 /**
  * @author Calclavia
@@ -22,7 +23,7 @@ object Laser
 
   val minEnergyToMine = 3000D
   val maxEnergyToMine = 500000D
-  val minBurnEnergy = minEnergyToMine / 1.5
+  val minBurnEnergy = minEnergyToMine
 
   var lastUpdateTime = 0L
   val currentBlockEnergy = mutable.HashMap[Vector3, Double]()
@@ -77,6 +78,25 @@ object Laser
             }
 
             spawn(world, hitVec + direction, hitVec, direction, ((newColor + color) / 2).normalize, energy)
+          }
+          else if (hitTile.isInstanceOf[TileEntityFurnace])
+          {
+            if (energy > minBurnEnergy)
+            {
+              val furnace = hitTile.asInstanceOf[TileEntityFurnace]
+              furnace.furnaceBurnTime = Math.max(furnace.furnaceBurnTime, 2)
+            }
+
+            /**
+             * Render laser hit
+             */
+            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color, energy)
+
+            /**
+             * Render scorch and particles
+             */
+            ElectromagneticCoherence.proxy.renderScorch(world, hitVec - (direction * 0.02), hit.sideHit)
+            ElectromagneticCoherence.proxy.renderBlockParticle(world, hitVec, hitBlock, hit.sideHit)
           }
           else
           {

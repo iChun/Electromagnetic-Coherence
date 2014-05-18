@@ -20,9 +20,9 @@ object Laser
   val minEnergy = 100D
   val maxEnergy = 5000D
 
-  val minEnergyToMine = 1000D
-  val maxEnergyToMine = 100000D
-  val minBurnEnergy = minEnergyToMine / 2
+  val minEnergyToMine = 3000D
+  val maxEnergyToMine = 500000D
+  val minBurnEnergy = minEnergyToMine / 1.5
 
   var lastUpdateTime = 0L
   val currentBlockEnergy = mutable.HashMap[Vector3, Double]()

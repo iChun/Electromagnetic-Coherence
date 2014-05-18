@@ -16,6 +16,7 @@ import resonantinduction.em.laser.{Laser, BlockRenderingHandler}
 class BlockLaserEmitter extends BlockContainer(Material.rock)
 {
   setBlockName(ElectromagneticCoherence.PREFIX + "laserEmitter")
+  setBlockTextureName("stone")
   setCreativeTab(CreativeTabs.tabRedstone)
 
   /**

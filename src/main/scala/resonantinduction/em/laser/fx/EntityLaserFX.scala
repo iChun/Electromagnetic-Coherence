@@ -24,7 +24,7 @@ class EntityLaserFX(par1World: World, start: Vector3, end: Vector3, color: Vecto
   val energyPercentage = Math.min(energy / Laser.maxEnergy, 1).toFloat
 
   val endSize = 0.001 + (0.244 - 0.001) * energyPercentage
-  val detail = 36
+  val detail = 20
   val rotationSpeed = 18
 
   /**

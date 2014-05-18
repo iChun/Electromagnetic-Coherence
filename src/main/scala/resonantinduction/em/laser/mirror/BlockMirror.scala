@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection
 class BlockMirror extends BlockContainer(Material.rock)
 {
   setBlockName(ElectromagneticCoherence.PREFIX + "mirror")
+  setBlockTextureName("stone")
   setCreativeTab(CreativeTabs.tabRedstone)
 
   override def onBlockPlacedBy(world: World, x: Int, y: Int, z: Int, entity: EntityLivingBase, itemStack: ItemStack)

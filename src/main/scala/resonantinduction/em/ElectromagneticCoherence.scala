@@ -6,7 +6,7 @@ import cpw.mods.fml.common.event.{FMLPreInitializationEvent, FMLInitializationEv
 import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
 import net.minecraft.util.{EnumChatFormatting, ResourceLocation}
 import resonantinduction.em.laser.emitter.BlockLaserEmitter
-import resonantinduction.em.laser.mirror.BlockMirror
+import resonantinduction.em.laser.mirror.{BlockFocusCrystal, BlockMirror}
 import resonantinduction.em.laser.receiver.BlockLaserReceiver
 import net.minecraft.init.{Items, Blocks}
 import net.minecraftforge.oredict.ShapedOreRecipe
@@ -42,6 +42,7 @@ object ElectromagneticCoherence
   var blockLaserEmitter: BlockLaserEmitter = null
   var blockLaserReceiver: BlockLaserReceiver = null
   var blockMirror: BlockMirror = null
+  var blockFocusCrystal: BlockFocusCrystal = null
 
   var guideBook: ItemStack = null
 
@@ -77,19 +78,23 @@ object ElectromagneticCoherence
     blockLaserEmitter = new BlockLaserEmitter()
     blockLaserReceiver = new BlockLaserReceiver()
     blockMirror = new BlockMirror()
+    blockFocusCrystal = new BlockFocusCrystal()
 
     GameRegistry.registerBlock(blockLaserEmitter, "LaserEmitter")
     GameRegistry.registerBlock(blockLaserReceiver, "LaserReceiver")
     GameRegistry.registerBlock(blockMirror, "Mirror")
+    GameRegistry.registerBlock(blockFocusCrystal, "FocusCrystal")
 
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserEmitter.name", "Laser Emitter")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "mirror.name", "Mirror")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserReceiver.name", "Laser Receiver")
+    LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "focusCrystal.name", "Focus Crystal")
     LanguageRegistry.instance.addStringLocalization("itemGroup.ec", NAME)
 
     GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserEmitter, "IGI", "IDI", "III", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot, 'D': Character, Items.diamond))
     GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserReceiver, "IGI", "IRI", "III", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot, 'R': Character, Blocks.redstone_block))
     GameRegistry.addRecipe(new ShapedOreRecipe(blockMirror, "GGG", "III", "GGG", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot))
+    GameRegistry.addRecipe(new ShapedOreRecipe(blockFocusCrystal, "GGG", "GDG", "GGG", 'G': Character, Blocks.glass, 'D': Character, Items.diamond))
 
     proxy.init()
   }

@@ -3,7 +3,7 @@ package resonantinduction.em
 import net.minecraft.world.World
 import cpw.mods.fml.common.registry.GameRegistry
 import resonantinduction.em.laser.emitter.{TileLaserReceiver, TileLaserEmitter}
-import resonantinduction.em.laser.mirror.TileMirror
+import resonantinduction.em.laser.mirror.{TileFocusCrystal, TileMirror}
 import net.minecraft.block.Block
 
 /**
@@ -16,6 +16,7 @@ class CommonProxy
     GameRegistry.registerTileEntity(classOf[TileLaserEmitter], "RILaserEmitter")
     GameRegistry.registerTileEntity(classOf[TileLaserReceiver], "RILaserReceiver")
     GameRegistry.registerTileEntity(classOf[TileMirror], "RIMirror")
+    GameRegistry.registerTileEntity(classOf[TileFocusCrystal], "RIFocusCrystal")
   }
 
   def renderBlockParticle(world: World, position: Vector3, block: Block, side: Int)

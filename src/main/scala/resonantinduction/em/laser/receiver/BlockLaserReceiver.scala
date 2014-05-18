@@ -2,7 +2,7 @@ package resonantinduction.em.laser.receiver
 
 import net.minecraft.block.{BlockPistonBase, BlockContainer}
 import net.minecraft.block.material.Material
-import resonantinduction.em.ElectromagneticCoherence
+import resonantinduction.em.{TabEC, ElectromagneticCoherence}
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.world.{IBlockAccess, World}
 import net.minecraft.entity.EntityLivingBase
@@ -19,7 +19,7 @@ class BlockLaserReceiver extends BlockContainer(Material.rock)
 {
   setBlockName(ElectromagneticCoherence.PREFIX + "laserReceiver")
   setBlockTextureName("stone")
-  setCreativeTab(CreativeTabs.tabRedstone)
+  setCreativeTab(TabEC)
 
   /**
    * Called when the block is placed in the world.

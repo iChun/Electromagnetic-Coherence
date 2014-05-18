@@ -2,7 +2,7 @@ package resonantinduction.em.laser.mirror
 
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
-import resonantinduction.em.{Vector3, ElectromagneticCoherence}
+import resonantinduction.em.{TabEC, Vector3, ElectromagneticCoherence}
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.world.World
 import net.minecraft.entity.player.EntityPlayer
@@ -20,7 +20,7 @@ class BlockMirror extends BlockContainer(Material.rock)
 {
   setBlockName(ElectromagneticCoherence.PREFIX + "mirror")
   setBlockTextureName("stone")
-  setCreativeTab(CreativeTabs.tabRedstone)
+  setCreativeTab(TabEC)
 
   override def onBlockPlacedBy(world: World, x: Int, y: Int, z: Int, entity: EntityLivingBase, itemStack: ItemStack)
   {

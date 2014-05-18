@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material
 import net.minecraft.world.{IBlockAccess, World}
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.tileentity.TileEntity
-import resonantinduction.em.ElectromagneticCoherence
+import resonantinduction.em.{TabEC, ElectromagneticCoherence}
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import resonantinduction.em.laser.{Laser, BlockRenderingHandler}
@@ -18,7 +18,7 @@ class BlockLaserEmitter extends BlockContainer(Material.rock)
 {
   setBlockName(ElectromagneticCoherence.PREFIX + "laserEmitter")
   setBlockTextureName("stone")
-  setCreativeTab(CreativeTabs.tabRedstone)
+  setCreativeTab(TabEC)
 
   /**
    * Called when the block is placed in the world.

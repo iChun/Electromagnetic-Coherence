@@ -38,7 +38,8 @@ class TileMirror extends TileBase with ILaserHandler with IFocus
       world.markBlockForUpdate(x, y, z)
     }
 
-    cachedHits = List()
+    if (world.getTotalWorldTime % 20 == 0)
+      cachedHits = List()
   }
 
   override def focus(newPosition: Vector3)

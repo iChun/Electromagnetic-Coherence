@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.laser.BlockRenderingHandler
+import net.minecraftforge.common.util.ForgeDirection
 
 /**
  * @author Calclavia
@@ -31,7 +32,17 @@ class BlockMirror extends BlockContainer(Material.rock)
   override def onBlockActivated(world: World, x: Int, y: Int, z: Int, player: EntityPlayer, side: Int, hitX: Float, hitY: Float, hitZ: Float): Boolean =
   {
     val mirror = world.getTileEntity(x, y, z).asInstanceOf[TileMirror]
-    mirror.normal = (new Vector3(hitX, hitY, hitZ) - 0.5).normalize
+
+    if (player.isSneaking)
+    {
+      mirror.normal = new Vector3(ForgeDirection.getOrientation(side))
+    }
+    else
+    {
+      mirror.normal = (new Vector3(hitX, hitY, hitZ) - 0.5).normalize
+    }
+
+    world.markBlockForUpdate(x, y, z)
     return true
   }
 

@@ -23,8 +23,12 @@ class TileMirror extends TileBase with ILaserHandler
       {
         val dir = ForgeDirection.getOrientation(a)
         val axis = new Vector3(dir)
-        val rotateAngle = world.getStrongestIndirectPower(x + axis.x.toInt, y + axis.y.toInt, z + axis.z.toInt) * 3
-        normal = normal.rotate(Math.toRadians(rotateAngle), axis)
+        val rotateAngle = world.getIndirectPowerLevelTo(x + axis.x.toInt, y + axis.y.toInt, z + axis.z.toInt, a) * 3
+
+        if (rotateAngle > 0)
+        {
+          normal = normal.rotate(Math.toRadians(rotateAngle), axis).normalize
+        }
       }
 
       world.markBlockForUpdate(x, y, z)

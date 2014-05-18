@@ -54,11 +54,9 @@ object ElectromagneticCoherence
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "mirror.name", "Mirror")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserReceiver.name", "Laser Receiver")
 
-    /*
-    GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserEmitter, Array("IGI", "IDI", "III", 'G', Blocks.glass, 'I', Items.iron_ingot, 'D', Items.diamond)))
-    GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserReceiver, Array("IGI", "IRI", "III", 'G', Blocks.glass, 'I', Items.iron_ingot, 'R', Blocks.redstone_block)))
-    GameRegistry.addRecipe(new ShapedOreRecipe(blockMirror, Array("GGG", "III", "GGG", 'G', Blocks.glass, 'I', Items.iron_ingot)))
-    */
+    GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserEmitter, "IGI", "IDI", "III", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot, 'D': Character, Items.diamond))
+    GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserReceiver, "IGI", "IRI", "III", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot, 'R': Character, Blocks.redstone_block))
+    GameRegistry.addRecipe(new ShapedOreRecipe(blockMirror, "GGG", "III", "GGG", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot))
 
     proxy.init()
   }

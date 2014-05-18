@@ -26,7 +26,7 @@ class TileLaserReceiver extends TileBase with ILaserHandler
     }
   }
 
-  def onLaserHit(renderStart: Vector3, incident: Vector3, hit: MovingObjectPosition, color: Vector3, energy: Double): Boolean =
+  override def onLaserHit(renderStart: Vector3, incident: Vector3, hit: MovingObjectPosition, color: Vector3, energy: Double): Boolean =
   {
     if (hit.sideHit == direction.ordinal)
     {
@@ -38,6 +38,4 @@ class TileLaserReceiver extends TileBase with ILaserHandler
 
     return false
   }
-
-
 }

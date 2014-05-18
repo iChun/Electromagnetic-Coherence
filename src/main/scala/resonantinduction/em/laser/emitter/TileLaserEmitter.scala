@@ -1,14 +1,17 @@
 package resonantinduction.em.laser.emitter
 
-import resonantinduction.em.laser.{Laser, TileBase}
+import resonantinduction.em.laser.{ILaserHandler, Laser, TileBase}
 import resonantinduction.em.Vector3
+import net.minecraft.util.MovingObjectPosition
 
 /**
  * @author Calclavia
  */
-class TileLaserEmitter extends TileBase
+class TileLaserEmitter extends TileBase with ILaserHandler
 {
   var energy = 0D
+
+  override def onLaserHit(renderStart: Vector3, incidentDirection: Vector3, hit: MovingObjectPosition, color: Vector3, energy: Double) = false
 
   override def updateEntity()
   {

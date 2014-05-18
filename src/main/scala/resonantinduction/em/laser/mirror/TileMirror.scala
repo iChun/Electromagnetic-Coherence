@@ -4,6 +4,8 @@ import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.nbt.NBTTagCompound
 import resonantinduction.em.laser.{TileBase, Laser, ILaserHandler}
 import net.minecraft.util.MovingObjectPosition
+import net.minecraft.network.{NetworkManager, Packet}
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity
 
 /**
  * @author Calclavia
@@ -32,6 +34,19 @@ class TileMirror extends TileBase with ILaserHandler
     }
 
     return true
+  }
+
+  override def getDescriptionPacket: Packet =
+  {
+    val nbt = new NBTTagCompound()
+    writeToNBT(nbt)
+    return new S35PacketUpdateTileEntity(x, y, z, 0, nbt)
+  }
+
+  override def onDataPacket(net: NetworkManager, pkt: S35PacketUpdateTileEntity)
+  {
+    val receive = pkt.func_148857_g
+    readFromNBT(receive)
   }
 
   override def readFromNBT(nbt: NBTTagCompound)

@@ -23,7 +23,7 @@ class EntityBlockParticleFX(world: World, x: Double, y: Double, z: Double, vX: D
   particleScale /= 2.0F
   setPosition(x, y, z)
   noClip = true
-  
+
   /**
    * If the block has a colour multiplier, copies it to this particle and returns this particle.
    */

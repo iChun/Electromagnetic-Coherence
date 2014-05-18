@@ -1,14 +1,16 @@
 package resonantinduction.em
 
-import cpw.mods.fml.common.{FMLLog, SidedProxy, Mod}
+import cpw.mods.fml.common.{SidedProxy, Mod}
 import cpw.mods.fml.common.Mod.EventHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
-import net.minecraft.util.{ResourceLocation, Vec3}
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.AdvancedModelLoader
 import resonantinduction.em.laser.emitter.BlockLaserEmitter
 import resonantinduction.em.laser.mirror.BlockMirror
 import resonantinduction.em.laser.receiver.BlockLaserReceiver
+import net.minecraft.init.{Items, Blocks}
+import net.minecraftforge.oredict.ShapedOreRecipe
 
 /**
  * @author Calclavia
@@ -23,7 +25,7 @@ object ElectromagneticCoherence
   val PREFIX = MOD_ID + ":";
 
   val DIRECTORY = "assets/" + DOMAIN + "/";
-  val MODEL_PATH_NAME =  "models/"
+  val MODEL_PATH_NAME = "models/"
   val MODEL_PATH = DIRECTORY + MODEL_PATH_NAME
   val FX_DIRECTORY = "textures/fx/"
 
@@ -51,6 +53,12 @@ object ElectromagneticCoherence
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserEmitter.name", "Laser Emitter")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "mirror.name", "Mirror")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserReceiver.name", "Laser Receiver")
+
+    /*
+    GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserEmitter, Array("IGI", "IDI", "III", 'G', Blocks.glass, 'I', Items.iron_ingot, 'D', Items.diamond)))
+    GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserReceiver, Array("IGI", "IRI", "III", 'G', Blocks.glass, 'I', Items.iron_ingot, 'R', Blocks.redstone_block)))
+    GameRegistry.addRecipe(new ShapedOreRecipe(blockMirror, Array("GGG", "III", "GGG", 'G', Blocks.glass, 'I', Items.iron_ingot)))
+    */
 
     proxy.init()
   }

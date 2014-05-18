@@ -3,6 +3,7 @@ package resonantinduction.em.laser.emitter
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import resonantinduction.em.laser.{Laser, TileBase, ILaserHandler}
 import net.minecraft.util.MovingObjectPosition
+import net.minecraftforge.common.util.ForgeDirection
 
 /**
  * @author Calclavia
@@ -23,6 +24,7 @@ class TileLaserReceiver extends TileBase with ILaserHandler
       if (redstoneValue != prevRedstoneValue)
       {
         world.notifyBlocksOfNeighborChange(x, y, z, getBlockType)
+        ForgeDirection.VALID_DIRECTIONS.foreach(dir => world.notifyBlocksOfNeighborChange(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, getBlockType))
         prevRedstoneValue = redstoneValue
       }
 
@@ -35,6 +37,7 @@ class TileLaserReceiver extends TileBase with ILaserHandler
       if (redstoneValue != prevRedstoneValue)
       {
         world.notifyBlocksOfNeighborChange(x, y, z, getBlockType)
+        ForgeDirection.VALID_DIRECTIONS.foreach(dir => world.notifyBlocksOfNeighborChange(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, getBlockType))
         prevRedstoneValue = redstoneValue
       }
     }

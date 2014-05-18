@@ -23,7 +23,7 @@ class EntityLaserFX(par1World: World, start: Vector3, end: Vector3, color: Vecto
 
   val energyPercentage = Math.min(energy / Laser.maxEnergy, 1).toFloat
 
-  val endSize = 0.001 + (0.244 - 0.001) * energyPercentage
+  val endSize = 0.01// + (0.2 - 0.01) * energyPercentage
   val detail = 20
   val rotationSpeed = 18
 
@@ -40,7 +40,7 @@ class EntityLaserFX(par1World: World, start: Vector3, end: Vector3, color: Vecto
   prevPosY = posY
   prevPosZ = posZ
 
-  particleScale = 0.5f * energyPercentage
+  particleScale = 0.4f * energyPercentage
   particleMaxAge = 1
   particleAlpha = 1 / (detail.asInstanceOf[Float] / (5f * energyPercentage))
   particleRed = color.x.toFloat
@@ -147,7 +147,7 @@ class EntityLaserFX(par1World: World, start: Vector3, end: Vector3, color: Vecto
        * Render End
        */
       glPushMatrix()
-      glTranslated(0, modifierTranslation, 0)
+      glTranslated(0, -modifierTranslation, 0)
       glRotatef(180, 1, 0, 0)
 
       FMLClientHandler.instance.getClient.renderEngine.bindTexture(laserEndTexture)
@@ -155,14 +155,13 @@ class EntityLaserFX(par1World: World, start: Vector3, end: Vector3, color: Vecto
       tessellator.startDrawingQuads()
       tessellator.setBrightness(200)
       tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha)
-      tessellator.addVertexWithUV(-particleScale, -particleScale, 0, 0, 0)
+      tessellator.addVertexWithUV(-particleScale, -particleScale , 0, 0, 0)
       tessellator.addVertexWithUV(-particleScale, particleScale, 0, 0, 1)
       tessellator.addVertexWithUV(particleScale, particleScale, 0, 1, 1)
-      tessellator.addVertexWithUV(particleScale, -particleScale, 0, 1, 0)
+      tessellator.addVertexWithUV(particleScale, -particleScale , 0, 1, 0)
       tessellator.draw()
 
       glPopMatrix()
-
 
       /**
        * Render Noise

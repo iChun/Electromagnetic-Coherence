@@ -27,7 +27,7 @@ class TileMirror extends TileBase with ILaserHandler with IFocus
       {
         val dir = ForgeDirection.getOrientation(a)
         val axis = new Vector3(dir)
-        val rotateAngle = world.getIndirectPowerLevelTo(x + axis.x.toInt, y + axis.y.toInt, z + axis.z.toInt, a) * 3
+        val rotateAngle = world.getIndirectPowerLevelTo(x + axis.x.toInt, y + axis.y.toInt, z + axis.z.toInt, a) * 15
 
         if (rotateAngle > 0)
         {

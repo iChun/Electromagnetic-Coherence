@@ -7,6 +7,7 @@ import resonantinduction.em.laser.focus.IFocus
 import net.minecraft.network.{NetworkManager, Packet}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity
+import net.minecraftforge.common.util.ForgeDirection
 
 /**
  * Redirects lasers to one point
@@ -21,6 +22,23 @@ class TileFocusCrystal extends TileBase with ILaserHandler with IFocus
 
   override def updateEntity()
   {
+    if (isPowered())
+    {
+      for (a <- 0 to 5)
+      {
+        val dir = ForgeDirection.getOrientation(a)
+        val axis = new Vector3(dir)
+        val rotateAngle = world.getIndirectPowerLevelTo(x + axis.x.toInt, y + axis.y.toInt, z + axis.z.toInt, a) * 15
+
+        if (rotateAngle > 0)
+        {
+          normal = normal.rotate(Math.toRadians(rotateAngle), axis).normalize
+        }
+      }
+
+      world.markBlockForUpdate(x, y, z)
+    }
+
     if (energy > 0)
     {
       Laser.spawn(worldObj, position + 0.5 + normal * 0.9, position + 0.5, normal, color, energy)

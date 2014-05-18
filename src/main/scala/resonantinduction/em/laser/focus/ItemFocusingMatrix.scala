@@ -88,6 +88,7 @@ class ItemFocusingMatrix extends Item
                   val axis = incident x targetDirection
                   var focusDirection = incident.clone.rotate(225 + Math.toDegrees(angle / 2), axis).normalize
 
+                  println(Math.toDegrees(angle))
                   if (focusDirection.magnitude == 0 || focusDirection.magnitude.equals(Double.NaN))
                   {
                     focusDirection = targetDirection

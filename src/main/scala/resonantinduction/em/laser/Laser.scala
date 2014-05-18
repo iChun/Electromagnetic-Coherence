@@ -10,6 +10,7 @@ import net.minecraft.item.ItemDye
 import java.awt.Color
 import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntityFurnace
+import cpw.mods.fml.relauncher.ReflectionHelper
 
 /**
  * @author Calclavia
@@ -79,25 +80,6 @@ object Laser
 
             spawn(world, hitVec + direction, hitVec, direction, ((newColor + color) / 2).normalize, energy)
           }
-          else if (hitTile.isInstanceOf[TileEntityFurnace])
-          {
-            if (energy > minBurnEnergy)
-            {
-              val furnace = hitTile.asInstanceOf[TileEntityFurnace]
-              furnace.furnaceBurnTime = Math.max(furnace.furnaceBurnTime, 2)
-            }
-
-            /**
-             * Render laser hit
-             */
-            ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color, energy)
-
-            /**
-             * Render scorch and particles
-             */
-            ElectromagneticCoherence.proxy.renderScorch(world, hitVec - (direction * 0.02), hit.sideHit)
-            ElectromagneticCoherence.proxy.renderBlockParticle(world, hitVec, hitBlock, hit.sideHit)
-          }
           else
           {
             /**
@@ -118,41 +100,64 @@ object Laser
                 val energyOnBlock = (if (currentBlockEnergy.contains(hitBlockPos)) currentBlockEnergy(hitBlockPos) else 0) + energy
                 currentBlockEnergy.put(hitBlockPos, energyOnBlock)
 
-                if (energyOnBlock > minEnergyToMine)
+                if (hitTile.isInstanceOf[TileEntityFurnace])
                 {
                   /**
-                   * The laser can mine the hitBlock!
+                   * Cook in furnace
                    */
-                  val accumulatedEnergy = (if (accumilatedBlockEnergy.contains(hitBlockPos)) accumilatedBlockEnergy(hitBlockPos) else 0) + energy
-                  accumilatedBlockEnergy.put(hitBlockPos, accumulatedEnergy)
+                  val furnace = hitTile.asInstanceOf[TileEntityFurnace]
 
-                  val energyRequiredToMineBlock = hardness * maxEnergyToMine
-
-                  world.destroyBlockInWorldPartially(Block.blockRegistry.getIDForObject(hitBlock), hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, (accumulatedEnergy / energyRequiredToMineBlock * 10).toInt)
-
-                  if (accumulatedEnergy > energyRequiredToMineBlock)
+                  try
                   {
-                    hitBlock.dropBlockAsItem(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, world.getBlockMetadata(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt), 0)
-                    world.setBlockToAir(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
-
-                    accumilatedBlockEnergy.remove(hitBlockPos)
+                    if (ReflectionHelper.findMethod(classOf[TileEntityFurnace], furnace, Array("canSmelt", "func_145948_k")).invoke(furnace).asInstanceOf[Boolean])
+                    {
+                      furnace.furnaceBurnTime = Math.max(2, furnace.furnaceBurnTime)
+                      furnace.furnaceCookTime = Math.min(199, furnace.furnaceCookTime + (15 * (energy / maxEnergy)).toInt)
+                    }
                   }
+                  catch
+                    {
+                      case e: Exception => e.printStackTrace()
+                    }
                 }
                 else
                 {
-                  //accumilatedBlockEnergy.remove(hitBlockPos)
-                }
-
-                /**
-                 * Catch Fire
-                 */
-                if (energyOnBlock > minBurnEnergy && hitBlock.getMaterial.getCanBurn)
-                {
-                  if (hitBlock.isInstanceOf[BlockTNT])
+                  if (energyOnBlock > minEnergyToMine)
                   {
-                    hitBlock.asInstanceOf[BlockTNT].func_150114_a(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, 1, null)
+                    /**
+                     * The laser can mine the hitBlock!
+                     */
+                    val accumulatedEnergy = (if (accumilatedBlockEnergy.contains(hitBlockPos)) accumilatedBlockEnergy(hitBlockPos) else 0) + energy
+                    accumilatedBlockEnergy.put(hitBlockPos, accumulatedEnergy)
+
+                    val energyRequiredToMineBlock = hardness * maxEnergyToMine
+
+                    world.destroyBlockInWorldPartially(Block.blockRegistry.getIDForObject(hitBlock), hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, (accumulatedEnergy / energyRequiredToMineBlock * 10).toInt)
+
+                    if (accumulatedEnergy > energyRequiredToMineBlock)
+                    {
+                      hitBlock.dropBlockAsItem(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, world.getBlockMetadata(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt), 0)
+                      world.setBlockToAir(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt)
+
+                      accumilatedBlockEnergy.remove(hitBlockPos)
+                    }
                   }
-                  world.setBlock(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, Blocks.fire)
+                  else
+                  {
+                    //accumilatedBlockEnergy.remove(hitBlockPos)
+                  }
+
+                  /**
+                   * Catch Fire
+                   */
+                  if (energyOnBlock > minBurnEnergy && hitBlock.getMaterial.getCanBurn)
+                  {
+                    if (hitBlock.isInstanceOf[BlockTNT])
+                    {
+                      hitBlock.asInstanceOf[BlockTNT].func_150114_a(world, hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, 1, null)
+                    }
+                    world.setBlock(hitBlockPos.x.toInt, hitBlockPos.y.toInt, hitBlockPos.z.toInt, Blocks.fire)
+                  }
                 }
               }
             }

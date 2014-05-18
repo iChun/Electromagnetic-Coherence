@@ -1,13 +1,14 @@
-package resonantinduction.em.laser.mirror
+package resonantinduction.em.laser.focus.mirror
 
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.nbt.NBTTagCompound
-import resonantinduction.em.laser.{IFocus, TileBase, Laser, ILaserHandler}
+import resonantinduction.em.laser.{TileBase, Laser, ILaserHandler}
 import net.minecraft.util.MovingObjectPosition
 import net.minecraft.network.{NetworkManager, Packet}
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity
 import net.minecraftforge.common.util.ForgeDirection
 import scala.collection.convert.wrapAsJava._
+import resonantinduction.em.laser.focus.IFocus
 
 /**
  * @author Calclavia
@@ -40,14 +41,15 @@ class TileMirror extends TileBase with ILaserHandler with IFocus
     cachedHits = List()
   }
 
-  /**
-   * Tells the block to look at a specific position
-   * @param newPosition
-   */
   override def focus(newPosition: Vector3)
   {
     normal = ((newPosition - position) - 0.5).normalize
     world.markBlockForUpdate(x, y, z)
+  }
+
+  def setFocus(focus: Vector3)
+  {
+    normal = focus
   }
 
   override def getFocus: Vector3 = normal
@@ -76,7 +78,7 @@ class TileMirror extends TileBase with ILaserHandler with IFocus
     if (Math.toDegrees(rotateAngle) < 180)
     {
       val newDirection = (incidentDirection.clone.rotate(rotateAngle, axisOfReflection)).normalize
-      Laser.spawn(worldObj, position + 0.5 + newDirection, position + 0.5, newDirection, color, energy / 1.2)
+      Laser.spawn(worldObj, position + 0.5 + newDirection * 0.9, position + 0.5, newDirection, color, energy / 1.2)
     }
 
     return true

@@ -6,7 +6,7 @@ import cpw.mods.fml.common.event.{FMLPreInitializationEvent, FMLInitializationEv
 import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
 import net.minecraft.util.{EnumChatFormatting, ResourceLocation}
 import resonantinduction.em.laser.emitter.BlockLaserEmitter
-import resonantinduction.em.laser.mirror.{BlockFocusCrystal, BlockMirror}
+import resonantinduction.em.laser.focus.mirror.BlockMirror
 import resonantinduction.em.laser.receiver.BlockLaserReceiver
 import net.minecraft.init.{Items, Blocks}
 import net.minecraftforge.oredict.ShapedOreRecipe
@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.{NBTTagString, NBTTagList, NBTTagCompound}
 import resonantinduction.em.laser.focus.ItemFocusingMatrix
+import resonantinduction.em.laser.focus.crystal.BlockFocusCrystal
 
 /**
  * @author Calclavia

@@ -1,4 +1,4 @@
-package resonantinduction.em.laser;
+package resonantinduction.em.laser.focus;
 
 import resonantinduction.em.Vector3;
 
@@ -19,6 +19,8 @@ public interface IFocus
 	public void focus(Vector3 position);
 
 	public Vector3 getFocus();
+
+	public void setFocus(Vector3 focus);
 
 	public List<Vector3> getCacheDirections();
 }

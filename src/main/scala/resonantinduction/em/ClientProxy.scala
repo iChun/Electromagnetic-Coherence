@@ -4,12 +4,12 @@ import cpw.mods.fml.client.FMLClientHandler
 import net.minecraft.world.World
 import cpw.mods.fml.client.registry.{RenderingRegistry, ClientRegistry}
 import resonantinduction.em.laser.emitter.{RenderLaserReceiver, TileLaserReceiver, TileLaserEmitter, RenderLaserEmitter}
-import resonantinduction.em.laser.mirror.{TileFocusCrystal, RenderMirror, TileMirror}
+import resonantinduction.em.laser.focus.mirror.{RenderMirror, TileMirror}
 import resonantinduction.em.laser.BlockRenderingHandler
 import net.minecraft.block.Block
 import resonantinduction.em.laser.fx.{EntityLaserFX, EntityBlockParticleFX, EntityScorchFX}
 import net.minecraftforge.client.model.AdvancedModelLoader
-import resonantinduction.em.laser.focus.RenderFocusCrystal
+import resonantinduction.em.laser.focus.crystal.{TileFocusCrystal, RenderFocusCrystal}
 
 /**
  * @author Calclavia

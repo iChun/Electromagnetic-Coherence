@@ -1,4 +1,4 @@
-package resonantinduction.em.laser.focus
+package resonantinduction.em.laser.focus.crystal
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.tileentity.TileEntity
@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11._
 import cpw.mods.fml.client.FMLClientHandler
 import net.minecraftforge.common.util.ForgeDirection
 import cpw.mods.fml.relauncher.{Side, SideOnly}
-import resonantinduction.em.laser.mirror.TileFocusCrystal
 
 /**
  * @author Calclavia
@@ -32,21 +31,11 @@ object RenderFocusCrystal extends TileEntitySpecialRenderer
 
     val focusCrystal = tileEntity.asInstanceOf[TileFocusCrystal]
 
-    focusCrystal.direction match
-    {
-      case ForgeDirection.UNKNOWN =>
-      case ForgeDirection.UP => glRotatef(-90, 1, 0, 0)
-      case ForgeDirection.DOWN => glRotatef(90, 1, 0, 0)
-      case ForgeDirection.NORTH => glRotatef(90, 0, 1, 0)
-      case ForgeDirection.SOUTH => glRotatef(-90, 0, 1, 0)
-      case ForgeDirection.WEST => glRotatef(-180, 0, 1, 0)
-      case ForgeDirection.EAST => glRotatef(0, 0, 1, 0)
-    }
+    val angle = focusCrystal.normal.eulerAngles
+    glRotated(angle.x, 0, 1, 0)
+    glRotated(angle.y, 1, 0, 0)
 
-    if (focusCrystal.direction.offsetY == 0)
-      glRotatef(-90, 0, 1, 0)
-    else
-      glRotatef(180, 1, 0, 0)
+    glRotated(180, 0, 1, 0)
 
     FMLClientHandler.instance.getClient.renderEngine.bindTexture(texture)
     GL11.glTranslatef(0, 0, 0.08f)

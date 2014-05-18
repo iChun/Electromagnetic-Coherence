@@ -4,7 +4,6 @@ import net.minecraft.item.{ItemStack, Item}
 import net.minecraft.world.World
 import net.minecraft.entity.player.EntityPlayer
 import cpw.mods.fml.relauncher.{SideOnly, Side}
-import resonantinduction.em.laser.IFocus
 import resonantinduction.em.{TabEC, ElectromagneticCoherence, Vector3}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{EnumChatFormatting, ChatComponentText}
@@ -72,7 +71,7 @@ class ItemFocusingMatrix extends Item
             {
               val cachedHits = focusDevice.getCacheDirections
 
-              if (cachedHits.size > 0)
+              if (cachedHits != null && cachedHits.size > 0)
               {
                 /**
                 Pick random cached laser hit and allow it to focus on a block

@@ -3,8 +3,9 @@ package resonantinduction.em
 import net.minecraft.world.World
 import cpw.mods.fml.common.registry.GameRegistry
 import resonantinduction.em.laser.emitter.{TileLaserReceiver, TileLaserEmitter}
-import resonantinduction.em.laser.mirror.{TileFocusCrystal, TileMirror}
+import resonantinduction.em.laser.focus.mirror.TileMirror
 import net.minecraft.block.Block
+import resonantinduction.em.laser.focus.crystal.TileFocusCrystal
 
 /**
  * @author Calclavia

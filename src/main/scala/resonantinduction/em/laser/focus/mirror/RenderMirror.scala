@@ -1,4 +1,4 @@
-package resonantinduction.em.laser.mirror
+package resonantinduction.em.laser.focus.mirror
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraftforge.client.model.AdvancedModelLoader

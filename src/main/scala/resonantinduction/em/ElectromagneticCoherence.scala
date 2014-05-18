@@ -4,7 +4,7 @@ import cpw.mods.fml.common.{FMLLog, SidedProxy, Mod}
 import cpw.mods.fml.common.Mod.EventHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.registry.{LanguageRegistry, GameRegistry}
-import net.minecraft.util.Vec3
+import net.minecraft.util.{ResourceLocation, Vec3}
 import net.minecraftforge.client.model.AdvancedModelLoader
 import resonantinduction.em.laser.emitter.BlockLaserEmitter
 import resonantinduction.em.laser.mirror.BlockMirror
@@ -25,6 +25,9 @@ object ElectromagneticCoherence
   val DIRECTORY = "assets/" + DOMAIN + "/";
   val MODEL_PATH_NAME =  "models/"
   val MODEL_PATH = DIRECTORY + MODEL_PATH_NAME
+  val FX_DIRECTORY = "textures/fx/"
+
+  val particleTextures = new ResourceLocation("textures/particle/particles.png")
 
   @SidedProxy(clientSide = "resonantinduction.em.ClientProxy", serverSide = "resonantinduction.em.CommonProxy")
   var proxy: CommonProxy = null

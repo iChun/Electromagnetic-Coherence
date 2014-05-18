@@ -133,7 +133,16 @@ object Laser
               }
             }
 
+            /**
+             * Render laser hit
+             */
             ElectromagneticCoherence.proxy.renderLaser(world, renderStart, hitVec, color, energy)
+
+            /**
+             * Render scorch and particles
+             */
+            ElectromagneticCoherence.proxy.renderScorch(world, hitVec - (direction * 0.02), hit.sideHit)
+            ElectromagneticCoherence.proxy.renderBlockParticle(world, hitVec, hitBlock, hit.sideHit)
           }
         }
 

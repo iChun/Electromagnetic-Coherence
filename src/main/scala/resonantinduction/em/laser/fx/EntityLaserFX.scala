@@ -1,4 +1,4 @@
-package resonantinduction.em.laser
+package resonantinduction.em.laser.fx
 
 import net.minecraft.world.World
 import net.minecraft.client.particle.EntityFX
@@ -7,24 +7,25 @@ import org.lwjgl.opengl.GL11._
 import cpw.mods.fml.client.FMLClientHandler
 import resonantinduction.em.{Vector3, ElectromagneticCoherence}
 import net.minecraft.util.ResourceLocation
+import resonantinduction.em.laser.Laser
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 
 /**
  * @author Calclavia
  */
-class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vector3, energy: Double) extends EntityFX(par1World, start.x, start.y, start.z)
+@SideOnly(Side.CLIENT)
+class EntityLaserFX(par1World: World, start: Vector3, end: Vector3, color: Vector3, energy: Double) extends EntityFX(par1World, start.x, start.y, start.z)
 {
-  val laserStartTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserStart.png")
-  val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserMiddle.png")
-  val laserEndTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/laserEnd.png")
-  val laserNoiseTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, "textures/fx/noise.png")
-  val particleTextures = new ResourceLocation("textures/particle/particles.png")
+  val laserStartTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.FX_DIRECTORY + "laserStart.png")
+  val laserMiddleTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.FX_DIRECTORY + "laserMiddle.png")
+  val laserEndTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.FX_DIRECTORY + "laserEnd.png")
+  val laserNoiseTexture = new ResourceLocation(ElectromagneticCoherence.DOMAIN, ElectromagneticCoherence.FX_DIRECTORY + "noise.png")
 
   val energyPercentage = Math.min(energy / Laser.maxEnergy, 1).toFloat
 
   val endSize = 0.001 + (0.244 - 0.001) * energyPercentage
   val detail = 36
   val rotationSpeed = 18
-  val life = 1
 
   /**
    * Set position
@@ -40,7 +41,7 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vecto
   prevPosZ = posZ
 
   particleScale = 0.5f * energyPercentage
-  particleMaxAge = life
+  particleMaxAge = 1
   particleAlpha = 1 / (detail.asInstanceOf[Float] / (5f * energyPercentage))
   particleRed = color.x.toFloat
   particleGreen = color.y.toFloat
@@ -182,9 +183,11 @@ class EntityLaserFx(par1World: World, start: Vector3, end: Vector3, color: Vecto
 
     glPopMatrix()
 
+    glEnable(3042)
+
     glPopMatrix()
 
-    FMLClientHandler.instance().getClient().renderEngine.bindTexture(particleTextures)
+    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ElectromagneticCoherence.particleTextures)
     tessellator.startDrawingQuads()
   }
 

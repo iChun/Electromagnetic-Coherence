@@ -8,7 +8,7 @@ import net.minecraft.world.{IBlockAccess, World}
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
-import resonantinduction.em.laser.emitter.TileLaserReceiver
+import resonantinduction.em.laser.emitter.{TileLaserEmitter, TileLaserReceiver}
 import resonantinduction.em.laser.{Laser, BlockRenderingHandler}
 
 /**
@@ -26,6 +26,11 @@ class BlockLaserReceiver extends BlockContainer(Material.rock)
   {
     val l = BlockPistonBase.determineOrientation(world, x, y, z, entity)
     world.setBlockMetadataWithNotify(x, y, z, l, 2)
+  }
+
+  override def getMixedBrightnessForBlock(access: IBlockAccess, x: Int, y: Int, z: Int): Int =
+  {
+    return ((access.getTileEntity(x, y, z).asInstanceOf[TileLaserReceiver].energy / Laser.maxEnergy) * 15).toInt
   }
 
   override def isProvidingWeakPower(access: IBlockAccess, x: Int, y: Int, z: Int, metadata: Int): Int =

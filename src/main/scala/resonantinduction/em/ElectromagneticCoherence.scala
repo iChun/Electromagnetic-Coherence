@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.{NBTTagString, NBTTagList, NBTTagCompound}
+import resonantinduction.em.laser.focus.ItemFocusingMatrix
 
 /**
  * @author Calclavia
@@ -44,6 +45,8 @@ object ElectromagneticCoherence
   var blockMirror: BlockMirror = null
   var blockFocusCrystal: BlockFocusCrystal = null
 
+  var itemFocusingMatrix: ItemFocusingMatrix = null
+
   var guideBook: ItemStack = null
 
   @EventHandler
@@ -70,6 +73,7 @@ object ElectromagneticCoherence
     pages.appendTag(new NBTTagString("To create a laser beam, provide a redstone pulse to the laser emitter. The intensity of the redstone would determine the intensity of the laser. Lasers with high intensities can burn and melt through blocks, hurting entities."))
     pages.appendTag(new NBTTagString("A laser beam can also be reflected using a  " + EnumChatFormatting.RED + "mirror" + EnumChatFormatting.BLACK + " with reduced intensity. Mirrors can be rotated by right clicking on it. Shift-right clicking a mirror focuses it to a side. Mirrors can also be auto-rotated with a redstone signal based on the direction of the signal propagation."))
     pages.appendTag(new NBTTagString("A " + EnumChatFormatting.RED + "laser receiver" + EnumChatFormatting.BLACK + " outputs a redstone signal with a strength based on the laser incident on its front. Using this, laser trip-wires can be made as entities walking through a laser will block its path."))
+    pages.appendTag(new NBTTagString("The " + EnumChatFormatting.RED + "focusing matrix" + EnumChatFormatting.BLACK + " allows the player to focus mirrors and focus crystals. First, right click on a mirror/crystal to select it. Then, right click on a point to focus. Clicking the point twice will aim the laser at that point instead of making the device look at the point."))
     pages.appendTag(new NBTTagString(EnumChatFormatting.RED + "Usages\n\n" + EnumChatFormatting.BLACK + "- Light Shows\n- Mining\n- Killing\n- Burning\n- Redstone Detection\n- Smelting (Aim strong laser at furnace)\n\nComing Soon:\n- Energy Transfer\n- Crafting"))
 
     bookNBT.setTag("pages", pages)
@@ -80,15 +84,21 @@ object ElectromagneticCoherence
     blockMirror = new BlockMirror()
     blockFocusCrystal = new BlockFocusCrystal()
 
+    itemFocusingMatrix = new ItemFocusingMatrix()
+
     GameRegistry.registerBlock(blockLaserEmitter, "LaserEmitter")
     GameRegistry.registerBlock(blockLaserReceiver, "LaserReceiver")
     GameRegistry.registerBlock(blockMirror, "Mirror")
     GameRegistry.registerBlock(blockFocusCrystal, "FocusCrystal")
 
+    GameRegistry.registerItem(itemFocusingMatrix, "FocusingMatrix")
+
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserEmitter.name", "Laser Emitter")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "mirror.name", "Mirror")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "laserReceiver.name", "Laser Receiver")
     LanguageRegistry.instance.addStringLocalization("tile." + PREFIX + "focusCrystal.name", "Focus Crystal")
+    LanguageRegistry.instance.addStringLocalization("item." + PREFIX + "focusingMatrix.name", "Focusing Matrix")
+
     LanguageRegistry.instance.addStringLocalization("itemGroup.ec", NAME)
 
     GameRegistry.addRecipe(new ShapedOreRecipe(blockLaserEmitter, "IGI", "IDI", "III", 'G': Character, Blocks.glass, 'I': Character, Items.iron_ingot, 'D': Character, Items.diamond))

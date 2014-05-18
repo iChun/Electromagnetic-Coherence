@@ -2,18 +2,21 @@ package resonantinduction.em.laser.mirror
 
 import resonantinduction.em.{ElectromagneticCoherence, Vector3}
 import net.minecraft.nbt.NBTTagCompound
-import resonantinduction.em.laser.{TileBase, Laser, ILaserHandler}
+import resonantinduction.em.laser.{IFocus, TileBase, Laser, ILaserHandler}
 import net.minecraft.util.MovingObjectPosition
 import net.minecraft.network.{NetworkManager, Packet}
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity
 import net.minecraftforge.common.util.ForgeDirection
+import scala.collection.convert.wrapAsJava._
 
 /**
  * @author Calclavia
  */
-class TileMirror extends TileBase with ILaserHandler
+class TileMirror extends TileBase with ILaserHandler with IFocus
 {
   var normal = new Vector3(0, 1, 0)
+
+  private var cachedHits = List[Vector3]()
 
   override def updateEntity()
   {
@@ -33,10 +36,34 @@ class TileMirror extends TileBase with ILaserHandler
 
       world.markBlockForUpdate(x, y, z)
     }
+
+    cachedHits = List()
   }
+
+  /**
+   * Tells the block to look at a specific position
+   * @param newPosition
+   */
+  override def focus(newPosition: Vector3)
+  {
+    normal = ((newPosition - position) - 0.5).normalize
+    world.markBlockForUpdate(x, y, z)
+  }
+
+  override def getFocus: Vector3 = normal
+
+  override def getCacheDirections: java.util.List[Vector3] = cachedHits.toList
 
   override def onLaserHit(renderStart: Vector3, incidentDirection: Vector3, hit: MovingObjectPosition, color: Vector3, energy: Double): Boolean =
   {
+    /**
+     * Cache hits
+     */
+    cachedHits = incidentDirection :: cachedHits
+
+    /**
+     * Render incoming laser
+     */
     ElectromagneticCoherence.proxy.renderLaser(worldObj, renderStart, position + 0.5, color, energy)
 
     /**

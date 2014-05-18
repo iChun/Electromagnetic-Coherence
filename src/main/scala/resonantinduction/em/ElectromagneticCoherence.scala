@@ -41,8 +41,6 @@ object ElectromagneticCoherence
   @EventHandler
   def init(event: FMLInitializationEvent)
   {
-    AdvancedModelLoader.registerModelHandler(new FixedTechneModelLoader())
-
     blockLaserEmitter = new BlockLaserEmitter()
     blockLaserReceiver = new BlockLaserReceiver()
     blockMirror = new BlockMirror()

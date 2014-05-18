@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.laser.BlockRenderingHandler
 import net.minecraftforge.common.util.ForgeDirection
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 
 /**
  * @author Calclavia
@@ -52,6 +53,7 @@ class BlockMirror extends BlockContainer(Material.rock)
     return new TileMirror()
   }
 
+  @SideOnly(Side.CLIENT)
   override def getRenderType = BlockRenderingHandler.getRenderId
 
   override def renderAsNormalBlock = false

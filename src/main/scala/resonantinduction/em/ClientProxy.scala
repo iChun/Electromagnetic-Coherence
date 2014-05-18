@@ -8,6 +8,7 @@ import resonantinduction.em.laser.mirror.{RenderMirror, TileMirror}
 import resonantinduction.em.laser.BlockRenderingHandler
 import net.minecraft.block.Block
 import resonantinduction.em.laser.fx.{EntityBlockParticleFX, EntityScorchFX, EntityLaserFX}
+import net.minecraftforge.client.model.AdvancedModelLoader
 
 /**
  * @author Calclavia
@@ -17,6 +18,8 @@ class ClientProxy extends CommonProxy
   override def init()
   {
     super.init()
+    AdvancedModelLoader.registerModelHandler(new FixedTechneModelLoader())
+
     RenderingRegistry.registerBlockHandler(BlockRenderingHandler)
 
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileLaserEmitter], RenderLaserEmitter)

@@ -9,6 +9,7 @@ import resonantinduction.em.ElectromagneticCoherence
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import resonantinduction.em.laser.{Laser, BlockRenderingHandler}
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 
 /**
  * @author Calclavia
@@ -38,6 +39,7 @@ class BlockLaserEmitter extends BlockContainer(Material.rock)
     return new TileLaserEmitter()
   }
 
+  @SideOnly(Side.CLIENT)
   override def getRenderType = BlockRenderingHandler.getRenderId
 
   override def renderAsNormalBlock = false

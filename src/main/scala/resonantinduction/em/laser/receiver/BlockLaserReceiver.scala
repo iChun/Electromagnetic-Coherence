@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import resonantinduction.em.laser.emitter.TileLaserReceiver
 import resonantinduction.em.laser.BlockRenderingHandler
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 
 /**
  * @author Calclavia
@@ -49,6 +50,7 @@ class BlockLaserReceiver extends BlockContainer(Material.rock)
     return new TileLaserReceiver()
   }
 
+  @SideOnly(Side.CLIENT)
   override def getRenderType = BlockRenderingHandler.getRenderId
 
   override def canProvidePower: Boolean = false
